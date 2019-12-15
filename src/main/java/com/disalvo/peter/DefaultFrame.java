@@ -5,10 +5,6 @@ import com.disalvo.peter.FrameScore.NumericFrameScore;
 
 import java.util.function.Consumer;
 
-// TODO Create a new branch and rewrite this to use composition
-// and strategy objects, so methods like complete and pendingbonus are hidden from the
-// public frame interface. I think it should just take breaking off some of the methods
-// to other interfaces. the scorecard can still implement them
 public class DefaultFrame implements Frame {
 
     protected static EmptyFrameScore emptyFrameScore() {
