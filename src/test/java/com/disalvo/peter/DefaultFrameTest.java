@@ -2,7 +2,6 @@ package com.disalvo.peter;
 
 import com.disalvo.peter.FrameScore.EmptyFrameScore;
 import com.disalvo.peter.FrameScore.NumericFrameScore;
-import net.bytebuddy.pool.TypePool.Empty;
 import org.junit.Test;
 
 import java.util.function.Consumer;
@@ -77,7 +76,7 @@ public class DefaultFrameTest {
         frame.roll(new PinCount(1));
 
         verify(scoreCard).spare(frame);
-        verify(scoreCard).completeAutomatically(frame);
+        verify(scoreCard).complete(frame);
 
         Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
         frame.score(frameScoreConsumer);
@@ -95,7 +94,7 @@ public class DefaultFrameTest {
         frame.roll(new PinCount(5));
 
         verify(scoreCard).strike(frame);
-        verify(scoreCard).completeAutomatically(frame);
+        verify(scoreCard).complete(frame);
 
         Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
         frame.score(frameScoreConsumer);

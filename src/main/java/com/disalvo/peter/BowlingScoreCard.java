@@ -39,7 +39,7 @@ public class BowlingScoreCard implements ScoreCard, ScoreCardFrameCallback, Scor
     }
 
     @Override
-    public void completeAutomatically(Frame frame) {
+    public void complete(Frame frame) {
         advanceFrame();
     }
 
@@ -67,7 +67,7 @@ public class BowlingScoreCard implements ScoreCard, ScoreCardFrameCallback, Scor
 
     private void completeWithBonus(Frame frame, Bonus bonus) {
         if(!isLastFrame()) {
-            completeFrame(frame);
+            frame.complete();
             frame.pendingBonus();
             bonuses.register(bonus);
         }
@@ -76,12 +76,7 @@ public class BowlingScoreCard implements ScoreCard, ScoreCardFrameCallback, Scor
     private boolean isLastFrame() {
         return currentFrameNumber.equals(LastFrameNumber);
     }
-
-    private void completeFrame(Frame frame) {
-        frame.complete();
-        advanceFrame();
-    }
-
+    
     private void advanceFrame() {
         if(isGameOver())
             return;

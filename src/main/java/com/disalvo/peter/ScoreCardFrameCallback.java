@@ -2,7 +2,7 @@ package com.disalvo.peter;
 
 public interface ScoreCardFrameCallback {
 
-    void completeAutomatically(Frame frame);
+    void complete(Frame frame);
     
     void strike(Frame frame);
 

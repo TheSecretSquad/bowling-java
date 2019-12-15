@@ -96,14 +96,9 @@ public class DefaultFrame implements Frame {
         scoreCard.strike(this);
     }
 
-    private void completeAutomatically() {
-        scoreCard.completeAutomatically(this);
-    }
-
     private void checkForAutoComplete() {
         if(shouldComplete()) {
             complete();
-            completeAutomatically();
         }
     }
 
@@ -153,6 +148,7 @@ public class DefaultFrame implements Frame {
     @Override
     public void complete() {
         isComplete = true;
+        scoreCard.complete(this);
     }
 
     @Override
