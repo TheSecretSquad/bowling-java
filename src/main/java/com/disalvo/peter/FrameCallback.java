@@ -1,6 +1,6 @@
 package com.disalvo.peter;
 
-public interface ScoreCardFrameCallback {
+public interface FrameCallback {
 
     void complete(Frame frame);
 

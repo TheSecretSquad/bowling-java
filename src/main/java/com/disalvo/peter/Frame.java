@@ -4,11 +4,13 @@ import java.util.function.Consumer;
 
 public interface Frame {
 
-    void roll(PinCount pinCount);
+    void roll(NumericPinCount pinCount);
 
-    void bonusRoll(PinCount pinCount);
+    void bonusRoll(NumericPinCount pinCount);
+
+    void bonusComplete();
 
     void score(Consumer<FrameScore> frameScoreConsumer);
 
-    void bonusComplete();
+    void printOn(FramePrintMedia printMedia);
 }

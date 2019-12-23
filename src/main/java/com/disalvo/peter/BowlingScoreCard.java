@@ -3,24 +3,26 @@ package com.disalvo.peter;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-public class BowlingScoreCard implements ScoreCard, ScoreCardFrameCallback, ScoreCardBonusCallback {
+public class BowlingScoreCard implements ScoreCard, FrameCallback, ScoreCardBonusCallback {
 
     private static final FrameNumber LastFrameNumber = new FrameNumber(10);
     private static final int NumberOfStrikeBonusRolls = 2;
     private static final int NumberOfSpareBonusRolls = 1;
 
+    private final ScoreCardListener scoreCardListener;
     private final Frames frames;
     private final Bonuses bonuses;
     private FrameNumber currentFrameNumber;
 
-    public BowlingScoreCard() {
+    public BowlingScoreCard(ScoreCardListener scoreCardListener) {
+        this.scoreCardListener = scoreCardListener;
         this.frames = new Frames(LastFrameNumber, new FrameFactory(this));
         this.bonuses = new Bonuses();
         this.currentFrameNumber = new FrameNumber(1);
     }
 
     @Override
-    public void roll(PinCount pinCount) {
+    public void roll(NumericPinCount pinCount) {
         bonuses.roll(pinCount);
         frames.current(frame -> frame.roll(pinCount));
     }
@@ -28,6 +30,11 @@ public class BowlingScoreCard implements ScoreCard, ScoreCardFrameCallback, Scor
     @Override
     public void frameScores(BiConsumer<FrameNumber, FrameScore> frameScoreConsumer) {
         frames.each(eachFrameWithNumber(frameScoreConsumer));
+    }
+
+    @Override
+    public void printOn(ScoreCardPrintMedia printMedia) {
+        frames.each((frameNumber, frame) -> frame.printOn(printMedia));
     }
 
     private BiConsumer<FrameNumber, Frame> eachFrameWithNumber(BiConsumer<FrameNumber, FrameScore> frameScoreConsumer) {

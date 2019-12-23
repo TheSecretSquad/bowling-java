@@ -8,41 +8,41 @@ import java.util.function.BiConsumer;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
-public class BowlingScoreCardAcceptanceTest {
+public class BowlingScoreCardScoreCardAcceptanceTest {
 
     @Test
     public void scoreRegularGame() {
-        ScoreCard scoreCard = new BowlingScoreCard();
+        ScoreCard scoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
 
@@ -62,38 +62,38 @@ public class BowlingScoreCardAcceptanceTest {
 
     @Test
     public void scoreSpares() {
-        ScoreCard scoreCard = new BowlingScoreCard();
+        ScoreCard scoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(9));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(9));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(9));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(9));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(9));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(9));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(9));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(9));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(9));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(9));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(9));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(9));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(9));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(9));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(9));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(9));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(9));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(9));
 
-        scoreCard.roll(new PinCount(1));
-        scoreCard.roll(new PinCount(9));
-        scoreCard.roll(new PinCount(1));
+        scoreCard.roll(new NumericPinCount(1));
+        scoreCard.roll(new NumericPinCount(9));
+        scoreCard.roll(new NumericPinCount(1));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
 
@@ -113,29 +113,29 @@ public class BowlingScoreCardAcceptanceTest {
 
     @Test
     public void scoreStrikes() {
-        ScoreCard scoreCard = new BowlingScoreCard();
+        ScoreCard scoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        scoreCard.roll(new PinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
 
-        scoreCard.roll(new PinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
 
-        scoreCard.roll(new PinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
 
-        scoreCard.roll(new PinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
 
-        scoreCard.roll(new PinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
 
-        scoreCard.roll(new PinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
 
-        scoreCard.roll(new PinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
 
-        scoreCard.roll(new PinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
 
-        scoreCard.roll(new PinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
 
-        scoreCard.roll(new PinCount(10));
-        scoreCard.roll(new PinCount(10));
-        scoreCard.roll(new PinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
+        scoreCard.roll(new NumericPinCount(10));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
 

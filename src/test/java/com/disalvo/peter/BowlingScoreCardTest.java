@@ -2,7 +2,6 @@ package com.disalvo.peter;
 
 import com.disalvo.peter.FrameScore.EmptyFrameScore;
 import com.disalvo.peter.FrameScore.NumericFrameScore;
-import net.bytebuddy.pool.TypePool.Empty;
 import org.junit.Test;
 
 import java.util.function.BiConsumer;
@@ -14,7 +13,7 @@ public class BowlingScoreCardTest {
 
     @Test
     public void startsWithTenEmptyFrames() {
-        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard();
+        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
         bowlingScoreCard.frameScores(frameScoreConsumer);
@@ -32,10 +31,10 @@ public class BowlingScoreCardTest {
 
     @Test
     public void bowlingRegularFrame() {
-        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard();
+        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        bowlingScoreCard.roll(new PinCount(1));
-        bowlingScoreCard.roll(new PinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(1));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
         bowlingScoreCard.frameScores(frameScoreConsumer);
@@ -53,13 +52,13 @@ public class BowlingScoreCardTest {
 
     @Test
     public void bowlingTwoRegularFrames_secondFrameIncludesScoreOfFirst() {
-        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard();
+        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        bowlingScoreCard.roll(new PinCount(1));
-        bowlingScoreCard.roll(new PinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(1));
 
-        bowlingScoreCard.roll(new PinCount(2));
-        bowlingScoreCard.roll(new PinCount(3));
+        bowlingScoreCard.roll(new NumericPinCount(2));
+        bowlingScoreCard.roll(new NumericPinCount(3));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
         bowlingScoreCard.frameScores(frameScoreConsumer);
@@ -78,10 +77,10 @@ public class BowlingScoreCardTest {
 
     @Test
     public void bowlingSpareFrameScoreIsEmptyUntilMoreRolls() {
-        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard();
+        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        bowlingScoreCard.roll(new PinCount(1));
-        bowlingScoreCard.roll(new PinCount(9));
+        bowlingScoreCard.roll(new NumericPinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(9));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
         bowlingScoreCard.frameScores(frameScoreConsumer);
@@ -100,12 +99,12 @@ public class BowlingScoreCardTest {
 
     @Test
     public void bowlingSpare_getsNextRollAsBonus() {
-        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard();
+        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        bowlingScoreCard.roll(new PinCount(1));
-        bowlingScoreCard.roll(new PinCount(9));
+        bowlingScoreCard.roll(new NumericPinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(9));
 
-        bowlingScoreCard.roll(new PinCount(2));
+        bowlingScoreCard.roll(new NumericPinCount(2));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
         bowlingScoreCard.frameScores(frameScoreConsumer);
@@ -124,12 +123,12 @@ public class BowlingScoreCardTest {
 
     @Test
     public void bowlingStrike_getsNextTwoRollsAsBonus() {
-        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard();
+        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        bowlingScoreCard.roll(new PinCount(10));
+        bowlingScoreCard.roll(new NumericPinCount(10));
 
-        bowlingScoreCard.roll(new PinCount(1));
-        bowlingScoreCard.roll(new PinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(1));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
         bowlingScoreCard.frameScores(frameScoreConsumer);
@@ -148,9 +147,9 @@ public class BowlingScoreCardTest {
 
     @Test
     public void bowlingStrikeFrameScoreIsEmptyUntilMoreRolls() {
-        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard();
+        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        bowlingScoreCard.roll(new PinCount(10));
+        bowlingScoreCard.roll(new NumericPinCount(10));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
         bowlingScoreCard.frameScores(frameScoreConsumer);
@@ -169,10 +168,10 @@ public class BowlingScoreCardTest {
 
     @Test
     public void bowlingStrikeFrameScoreIsEmptyEvenAfterNextRoll() {
-        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard();
+        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        bowlingScoreCard.roll(new PinCount(10));
-        bowlingScoreCard.roll(new PinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(10));
+        bowlingScoreCard.roll(new NumericPinCount(1));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
         bowlingScoreCard.frameScores(frameScoreConsumer);
@@ -191,12 +190,12 @@ public class BowlingScoreCardTest {
 
     @Test
     public void bowlingStrikeFrameScoreIsAvailableAfterSecondRoll() {
-        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard();
+        BowlingScoreCard bowlingScoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
 
-        bowlingScoreCard.roll(new PinCount(10));
+        bowlingScoreCard.roll(new NumericPinCount(10));
 
-        bowlingScoreCard.roll(new PinCount(1));
-        bowlingScoreCard.roll(new PinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(1));
+        bowlingScoreCard.roll(new NumericPinCount(1));
 
         BiConsumer<FrameNumber, FrameScore> frameScoreConsumer = mock(BiConsumer.class);
         bowlingScoreCard.frameScores(frameScoreConsumer);

@@ -6,11 +6,11 @@ public abstract class FrameScore {
 
     public abstract FrameScore sumWith(FrameScore asFrameScore);
 
-    public abstract FrameScore sumWith(PinCount pinCount);
+    public abstract FrameScore sumWith(NumericPinCount pinCount);
 
     protected abstract FrameScore sumWith(int score);
 
-    public abstract boolean sameAs(PinCount pinCount);
+    public abstract boolean sameAs(NumericPinCount pinCount);
 
     public static class EmptyFrameScore extends FrameScore {
         private final String score;
@@ -45,7 +45,7 @@ public abstract class FrameScore {
         }
 
         @Override
-        public FrameScore sumWith(PinCount pinCount) {
+        public FrameScore sumWith(NumericPinCount pinCount) {
             return pinCount.sumWith(new NumericFrameScore(0));
         }
 
@@ -55,7 +55,7 @@ public abstract class FrameScore {
         }
 
         @Override
-        public boolean sameAs(PinCount pinCount) {
+        public boolean sameAs(NumericPinCount pinCount) {
             return false;
         }
     }
@@ -100,7 +100,7 @@ public abstract class FrameScore {
         }
 
         @Override
-        public FrameScore sumWith(PinCount pinCount) {
+        public FrameScore sumWith(NumericPinCount pinCount) {
             return pinCount.sumWith(this);
         }
 
@@ -110,7 +110,7 @@ public abstract class FrameScore {
         }
 
         @Override
-        public boolean sameAs(PinCount pinCount) {
+        public boolean sameAs(NumericPinCount pinCount) {
             return equals(pinCount.asFrameScore());
         }
     }

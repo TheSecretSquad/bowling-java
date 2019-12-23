@@ -12,7 +12,7 @@ public class Bonuses {
         this.bonusCollection = new ArrayList<>();
     }
 
-    void roll(PinCount pinCount) {
+    void roll(NumericPinCount pinCount) {
         safelyModifiableIteration(bonus -> bonus.roll(pinCount));
     }
 

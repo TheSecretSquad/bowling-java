@@ -11,15 +11,16 @@ public class DefaultFrame implements Frame {
         return new EmptyFrameScore();
     }
 
-    private static final PinCount TotalNumberOfPins = new PinCount(10);
+    private static final NumericPinCount TotalNumberOfPins = new NumericPinCount(10);
     private static final int DefaultMaxAllowedRolls = 2;
     private static final int DefaultCompleteAfterNumberOfRolls = DefaultMaxAllowedRolls;
     private static final Frame NullFrame = new NullFrame();
 
-    private final ScoreCardFrameCallback scoreCard;
+    private final FrameCallback frameCallback;
+    private FrameNumber frameNumber;
     private FrameBehavior frameBehavior;
     private final Frame previousFrame;
-    private final PinCount[] rolls;
+    private final NumericPinCount[] rolls;
     private final int maxAllowedRolls;
     private int completeAfterNumberOfRolls;
     private int currentRoll;
@@ -27,23 +28,28 @@ public class DefaultFrame implements Frame {
     private boolean waitingForBonus;
     private FrameScore bonus;
 
-    public DefaultFrame(ScoreCardFrameCallback scoreCard, FrameBehavior frameBehavior) {
-        this(scoreCard, frameBehavior, NullFrame, DefaultMaxAllowedRolls);
+    public DefaultFrame(FrameCallback frameCallback, FrameNumber frameNumber, FrameBehavior frameBehavior) {
+        this(frameCallback, frameNumber, frameBehavior, NullFrame, DefaultMaxAllowedRolls);
     }
 
-    public DefaultFrame(ScoreCardFrameCallback scoreCard, FrameBehavior frameBehavior, int maxAllowedRolls) {
-        this(scoreCard, frameBehavior, NullFrame, maxAllowedRolls);
+    public DefaultFrame(FrameCallback frameCallback, FrameNumber frameNumber, FrameBehavior frameBehavior, int maxAllowedRolls) {
+        this(frameCallback, frameNumber, frameBehavior, NullFrame, maxAllowedRolls);
     }
 
-    public DefaultFrame(ScoreCardFrameCallback scoreCard, FrameBehavior frameBehavior, Frame previousFrame) {
-        this(scoreCard, frameBehavior, previousFrame, DefaultMaxAllowedRolls);
+    public DefaultFrame(FrameCallback frameCallback, FrameNumber frameNumber, FrameBehavior frameBehavior, Frame previousFrame) {
+        this(frameCallback, frameNumber, frameBehavior, previousFrame, DefaultMaxAllowedRolls);
     }
 
-    public DefaultFrame(ScoreCardFrameCallback scoreCard, FrameBehavior frameBehavior, Frame previousFrame, int maxAllowedRolls) {
-        this.scoreCard = scoreCard;
+    public DefaultFrame(FrameCallback frameCallback,
+                        FrameNumber frameNumber,
+                        FrameBehavior frameBehavior,
+                        Frame previousFrame,
+                        int maxAllowedRolls) {
+        this.frameCallback = frameCallback;
+        this.frameNumber = frameNumber;
         this.frameBehavior = frameBehavior;
         this.previousFrame = previousFrame;
-        this.rolls = new PinCount[maxAllowedRolls];
+        this.rolls = new NumericPinCount[maxAllowedRolls];
         this.maxAllowedRolls = maxAllowedRolls;
         this.completeAfterNumberOfRolls = DefaultCompleteAfterNumberOfRolls;
         this.currentRoll = 0;
@@ -53,7 +59,7 @@ public class DefaultFrame implements Frame {
     }
 
     @Override
-    public void roll(PinCount pinCount) {
+    public void roll(NumericPinCount pinCount) {
         addToCurrentRoll(pinCount);
         countRoll();
         checkSpecialConditions();
@@ -61,11 +67,11 @@ public class DefaultFrame implements Frame {
     }
 
     @Override
-    public void bonusRoll(PinCount pinCount) {
+    public void bonusRoll(NumericPinCount pinCount) {
         bonus = bonus.sumWith(pinCount);
     }
 
-    private void addToCurrentRoll(PinCount pinCount) {
+    private void addToCurrentRoll(NumericPinCount pinCount) {
         if(isComplete())
             throw new TooManyRollsException();
         rolls[currentRoll] = pinCount;
@@ -116,7 +122,7 @@ public class DefaultFrame implements Frame {
         return pinCountForCurrentRoll().equals(TotalNumberOfPins);
     }
 
-    private PinCount pinCountForCurrentRoll() {
+    private NumericPinCount pinCountForCurrentRoll() {
         return pinCountForRoll(currentRoll - 1);
     }
 
@@ -124,15 +130,15 @@ public class DefaultFrame implements Frame {
         return currentRoll == DefaultCompleteAfterNumberOfRolls && sumRolls().sameAs(TotalNumberOfPins);
     }
 
-    private PinCount pinCountForRoll(int index) {
-        PinCount pinCount = rolls[index];
-        return pinCount != null ? pinCount : new PinCount(0);
+    private NumericPinCount pinCountForRoll(int index) {
+        NumericPinCount pinCount = rolls[index];
+        return pinCount != null ? pinCount : new NumericPinCount(0);
     }
 
     private FrameScore sumRolls() {
         FrameScore rollsScore = new NumericFrameScore(0);
         for(int rollIndex = 0; rollIndex < maxAllowedRolls; rollIndex++) {
-            PinCount pinCount = rolls[rollIndex];
+            NumericPinCount pinCount = rolls[rollIndex];
             if(pinCount != null)
                 rollsScore = rollsScore.sumWith(pinCount);
         }
@@ -149,7 +155,7 @@ public class DefaultFrame implements Frame {
 
     public void complete() {
         isComplete = true;
-        scoreCard.complete(this);
+        frameCallback.complete(this);
     }
 
     @Override
@@ -157,8 +163,13 @@ public class DefaultFrame implements Frame {
         waitingForBonus = false;
     }
 
+    @Override
+    public void printOn(FramePrintMedia printMedia) {
+        score(frameScore -> printMedia.printFrame(frameNumber, frameScore, new Rolls(rolls)));
+    }
+
     public void requestBonusRolls(int numberOfRolls) {
-        scoreCard.requestBonusRolls(this, numberOfRolls);
+        frameCallback.requestBonusRolls(this, numberOfRolls);
         waitingForBonus = true;
     }
 
@@ -181,12 +192,12 @@ public class DefaultFrame implements Frame {
     private static class NullFrame implements Frame {
 
         @Override
-        public void roll(PinCount pinCount) {
+        public void roll(NumericPinCount pinCount) {
             // Do nothing
         }
 
         @Override
-        public void bonusRoll(PinCount pinCount) {
+        public void bonusRoll(NumericPinCount pinCount) {
             // Do nothing
         }
 
@@ -198,6 +209,10 @@ public class DefaultFrame implements Frame {
         @Override
         public void bonusComplete() {
             // Do nothing
+        }
+
+        @Override
+        public void printOn(FramePrintMedia printMedia) {
         }
     }
 }
