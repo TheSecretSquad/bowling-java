@@ -155,7 +155,7 @@ public class DefaultFrame implements Frame {
 
     public void complete() {
         isComplete = true;
-        frameCallback.complete(this);
+        frameCallback.completeFrame();
     }
 
     @Override

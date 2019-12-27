@@ -23,7 +23,7 @@ public class LastFrameTest {
         frame.roll(new NumericPinCount(9));
         frame.roll(new NumericPinCount(1));
 
-        verify(scoreCard).complete(frame);
+        verify(scoreCard).completeFrame();
 
         Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
         frame.score(frameScoreConsumer);
@@ -41,7 +41,7 @@ public class LastFrameTest {
         frame.roll(new NumericPinCount(5));
         frame.roll(new NumericPinCount(5));
 
-        verify(scoreCard).complete(frame);
+        verify(scoreCard).completeFrame();
 
         Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
         frame.score(frameScoreConsumer);
@@ -57,7 +57,7 @@ public class LastFrameTest {
 
         frame.roll(new NumericPinCount(10));
 
-        verify(scoreCard, never()).complete(frame);
+        verify(scoreCard, never()).completeFrame();
     }
 
     @Test
@@ -69,7 +69,7 @@ public class LastFrameTest {
         frame.roll(new NumericPinCount(10));
         frame.roll(new NumericPinCount(10));
 
-        verify(scoreCard, never()).complete(frame);
+        verify(scoreCard, never()).completeFrame();
     }
 
     @Test
@@ -82,7 +82,7 @@ public class LastFrameTest {
         frame.roll(new NumericPinCount(10));
         frame.roll(new NumericPinCount(10));
 
-        verify(scoreCard).complete(frame);
+        verify(scoreCard).completeFrame();
     }
 
     @Test

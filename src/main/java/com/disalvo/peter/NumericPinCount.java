@@ -15,8 +15,8 @@ public final class NumericPinCount extends PinCount {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        NumericPinCount pinCount = (NumericPinCount) o;
-        return count == pinCount.count;
+        NumericPinCount that = (NumericPinCount) o;
+        return count == that.count;
     }
 
     @Override
@@ -26,7 +26,7 @@ public final class NumericPinCount extends PinCount {
 
     @Override
     public String toString() {
-        return "PinCount{" +
+        return "NumericPinCount{" +
                 "count=" + count +
                 '}';
     }

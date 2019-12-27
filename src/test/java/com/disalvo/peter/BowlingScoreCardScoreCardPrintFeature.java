@@ -11,7 +11,7 @@ public class BowlingScoreCardScoreCardPrintFeature {
 
     @Test
     public void emptyScoreCard() {
-        BowlingScoreCard scoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
+        BowlingScoreCard scoreCard = new BowlingScoreCard();
 
         ScoreCardPrintMedia printMedia = mock(ScoreCardPrintMedia.class);
 
@@ -27,12 +27,12 @@ public class BowlingScoreCardScoreCardPrintFeature {
         inOrder.verify(printMedia).printFrame(new FrameNumber(7), new EmptyFrameScore(), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
         inOrder.verify(printMedia).printFrame(new FrameNumber(8), new EmptyFrameScore(), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
         inOrder.verify(printMedia).printFrame(new FrameNumber(9), new EmptyFrameScore(), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
-        inOrder.verify(printMedia).printFrame(new FrameNumber(10), new EmptyFrameScore(), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
+        inOrder.verify(printMedia).printFrame(new FrameNumber(10), new EmptyFrameScore(), new Rolls(new EmptyPinCount(), new EmptyPinCount(), new EmptyPinCount()));
     }
 
     @Test
     public void scoreRegularGame() {
-        BowlingScoreCard scoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
+        BowlingScoreCard scoreCard = new BowlingScoreCard();
 
         scoreCard.roll(new NumericPinCount(1));
         scoreCard.roll(new NumericPinCount(1));
@@ -78,12 +78,12 @@ public class BowlingScoreCardScoreCardPrintFeature {
         inOrder.verify(printMedia).printFrame(new FrameNumber(7), new NumericFrameScore(14), new Rolls(new NumericPinCount(1), new NumericPinCount(1)));
         inOrder.verify(printMedia).printFrame(new FrameNumber(8), new NumericFrameScore(16), new Rolls(new NumericPinCount(1), new NumericPinCount(1)));
         inOrder.verify(printMedia).printFrame(new FrameNumber(9), new NumericFrameScore(18), new Rolls(new NumericPinCount(1), new NumericPinCount(1)));
-        inOrder.verify(printMedia).printFrame(new FrameNumber(10), new NumericFrameScore(20), new Rolls(new NumericPinCount(1), new NumericPinCount(1)));
+        inOrder.verify(printMedia).printFrame(new FrameNumber(10), new NumericFrameScore(20), new Rolls(new NumericPinCount(1), new NumericPinCount(1), new EmptyPinCount()));
     }
 
     @Test
     public void scoreSpares() {
-        ScoreCard scoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
+        ScoreCard scoreCard = new BowlingScoreCard();
 
         scoreCard.roll(new NumericPinCount(1));
         scoreCard.roll(new NumericPinCount(9));
@@ -135,7 +135,7 @@ public class BowlingScoreCardScoreCardPrintFeature {
 
     @Test
     public void scoreStrikes() {
-        ScoreCard scoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
+        ScoreCard scoreCard = new BowlingScoreCard();
 
         scoreCard.roll(new NumericPinCount(10));
 
@@ -178,7 +178,7 @@ public class BowlingScoreCardScoreCardPrintFeature {
 
     @Test
     public void randomGame() {
-        BowlingScoreCard scoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
+        BowlingScoreCard scoreCard = new BowlingScoreCard();
 
         scoreCard.roll(new NumericPinCount(3));
         scoreCard.roll(new NumericPinCount(6));
@@ -228,7 +228,7 @@ public class BowlingScoreCardScoreCardPrintFeature {
 
     @Test
     public void partialGame() {
-        BowlingScoreCard scoreCard = new BowlingScoreCard(mock(ScoreCardListener.class));
+        BowlingScoreCard scoreCard = new BowlingScoreCard();
 
         scoreCard.roll(new NumericPinCount(3));
         scoreCard.roll(new NumericPinCount(6));
@@ -253,11 +253,11 @@ public class BowlingScoreCardScoreCardPrintFeature {
         inOrder.verify(printMedia).printFrame(new FrameNumber(2), new NumericFrameScore(18), new Rolls(new NumericPinCount(3), new NumericPinCount(6)));
         inOrder.verify(printMedia).printFrame(new FrameNumber(3), new NumericFrameScore(27), new Rolls(new NumericPinCount(8), new NumericPinCount(1)));
         inOrder.verify(printMedia).printFrame(new FrameNumber(4), new NumericFrameScore(30), new Rolls(new NumericPinCount(3), new NumericPinCount(0)));
-        inOrder.verify(printMedia).printFrame(new FrameNumber(5), new NumericFrameScore(57), new Rolls(new NumericPinCount(10), new EmptyPinCount()));
-        inOrder.verify(printMedia).printFrame(new FrameNumber(6), new NumericFrameScore(77), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
-        inOrder.verify(printMedia).printFrame(new FrameNumber(7), new NumericFrameScore(91), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
-        inOrder.verify(printMedia).printFrame(new FrameNumber(8), new NumericFrameScore(95), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
-        inOrder.verify(printMedia).printFrame(new FrameNumber(9), new NumericFrameScore(104), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
-        inOrder.verify(printMedia).printFrame(new FrameNumber(10), new NumericFrameScore(123), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
+        inOrder.verify(printMedia).printFrame(new FrameNumber(5), new EmptyFrameScore(), new Rolls(new NumericPinCount(10), new EmptyPinCount()));
+        inOrder.verify(printMedia).printFrame(new FrameNumber(6), new EmptyFrameScore(), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
+        inOrder.verify(printMedia).printFrame(new FrameNumber(7), new EmptyFrameScore(), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
+        inOrder.verify(printMedia).printFrame(new FrameNumber(8), new EmptyFrameScore(), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
+        inOrder.verify(printMedia).printFrame(new FrameNumber(9), new EmptyFrameScore(), new Rolls(new EmptyPinCount(), new EmptyPinCount()));
+        inOrder.verify(printMedia).printFrame(new FrameNumber(10), new EmptyFrameScore(), new Rolls(new EmptyPinCount(), new EmptyPinCount(), new EmptyPinCount()));
     }
 }

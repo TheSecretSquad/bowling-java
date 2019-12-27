@@ -48,7 +48,7 @@ public class NormalFrameTest {
         Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
         frame.score(frameScoreConsumer);
 
-        verify(scoreCard).complete(frame);
+        verify(scoreCard).completeFrame();
     }
 
     @Test
