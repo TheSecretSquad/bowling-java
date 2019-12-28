@@ -28,16 +28,8 @@ public class DefaultFrame implements Frame {
     private boolean waitingForBonus;
     private FrameScore bonus;
 
-    public DefaultFrame(FrameCallback frameCallback, FrameNumber frameNumber, FrameBehavior frameBehavior) {
-        this(frameCallback, frameNumber, frameBehavior, NullFrame, DefaultMaxAllowedRolls);
-    }
-
     public DefaultFrame(FrameCallback frameCallback, FrameNumber frameNumber, FrameBehavior frameBehavior, int maxAllowedRolls) {
         this(frameCallback, frameNumber, frameBehavior, NullFrame, maxAllowedRolls);
-    }
-
-    public DefaultFrame(FrameCallback frameCallback, FrameNumber frameNumber, FrameBehavior frameBehavior, Frame previousFrame) {
-        this(frameCallback, frameNumber, frameBehavior, previousFrame, DefaultMaxAllowedRolls);
     }
 
     public DefaultFrame(FrameCallback frameCallback,

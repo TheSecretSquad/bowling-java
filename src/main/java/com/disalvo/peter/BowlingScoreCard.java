@@ -1,8 +1,5 @@
 package com.disalvo.peter;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
 public class BowlingScoreCard implements ScoreCard, FrameCallback, ScoreCardBonusCallback {
 
     private static final FrameNumber LastFrameNumber = new FrameNumber(10);
@@ -42,10 +39,6 @@ public class BowlingScoreCard implements ScoreCard, FrameCallback, ScoreCardBonu
     @Override
     public void printOn(ScoreCardPrintMedia printMedia) {
         frames.each((frameNumber, frame) -> frame.printOn(printMedia));
-    }
-
-    private Consumer<FrameScore> eachFrameScoreWithNumber(BiConsumer<FrameNumber, FrameScore> frameScoreConsumer, FrameNumber frameNumber) {
-        return frameScore -> frameScoreConsumer.accept(frameNumber, frameScore);
     }
 
     @Override

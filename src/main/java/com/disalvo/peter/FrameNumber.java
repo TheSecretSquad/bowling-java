@@ -1,7 +1,6 @@
 package com.disalvo.peter;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class FrameNumber {
     private int number;
@@ -40,11 +39,4 @@ public class FrameNumber {
     public FrameNumber advanced() {
         return new FrameNumber(number + 1);
     }
-
-    public void toDo(FrameNumber toFrameNumber, Consumer<FrameNumber> frameNumberConsumer) {
-        for(int i = this.number; i <= toFrameNumber.number; i++) {
-            frameNumberConsumer.accept(new FrameNumber(i));
-        }
-    }
-
 }
