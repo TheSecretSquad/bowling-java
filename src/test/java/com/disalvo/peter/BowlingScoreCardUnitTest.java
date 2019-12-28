@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
 
-public class BowlingScoreCardScoreCardUnitTest {
+public class BowlingScoreCardUnitTest {
 
     private FrameFactory frameFactoryWithFirstLastNext(Frame first, Frame last, Frame ... nextFrames) {
         FrameFactory frameFactory = mock(FrameFactory.class);

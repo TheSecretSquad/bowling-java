@@ -13,4 +13,6 @@ public interface Frame {
     void score(Consumer<FrameScore> frameScoreConsumer);
 
     void printOn(FramePrintMedia printMedia);
+
+    void printOn(ScoreCardPrintMedia2 printMedia);
 }

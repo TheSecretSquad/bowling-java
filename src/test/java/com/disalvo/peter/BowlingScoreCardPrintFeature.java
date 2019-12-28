@@ -7,7 +7,7 @@ import org.mockito.InOrder;
 
 import static org.mockito.Mockito.*;
 
-public class BowlingScoreCardScoreCardPrintFeature {
+public class BowlingScoreCardPrintFeature {
 
     @Test
     public void emptyScoreCard() {

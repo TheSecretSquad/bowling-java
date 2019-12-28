@@ -1,6 +1,7 @@
 package com.disalvo.peter;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public class FrameNumber {
     private int number;
@@ -38,5 +39,9 @@ public class FrameNumber {
 
     public FrameNumber advanced() {
         return new FrameNumber(number + 1);
+    }
+
+    public void print(Consumer<String> printAction) {
+        printAction.accept(toString());
     }
 }

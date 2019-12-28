@@ -1,5 +1,7 @@
 package com.disalvo.peter;
 
+import java.util.function.Consumer;
+
 public abstract class PinCount {
 
     public FrameScore sumWith(FrameScore frameScore) {
@@ -7,4 +9,12 @@ public abstract class PinCount {
     }
 
     protected abstract FrameScore asFrameScore();
+
+    public void print(Consumer<String> printAction, Runnable printEmptyAction) {
+        String printValue = toString();
+        if(printValue.isBlank())
+            printEmptyAction.run();
+        else
+            printAction.accept(printValue);
+    }
 }

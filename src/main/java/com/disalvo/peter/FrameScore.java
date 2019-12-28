@@ -1,16 +1,21 @@
 package com.disalvo.peter;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public abstract class FrameScore {
 
     public abstract FrameScore sumWith(FrameScore asFrameScore);
 
-    public abstract FrameScore sumWith(NumericPinCount pinCount);
+    public abstract FrameScore sumWith(PinCount pinCount);
 
     protected abstract FrameScore sumWith(int score);
 
-    public abstract boolean sameAs(NumericPinCount pinCount);
+    public abstract boolean sameAs(PinCount pinCount);
+
+    public void print(Consumer<String> printAction) {
+        printAction.accept(toString());
+    }
 
     public static class EmptyFrameScore extends FrameScore {
         private final String score;
@@ -43,7 +48,7 @@ public abstract class FrameScore {
         }
 
         @Override
-        public FrameScore sumWith(NumericPinCount pinCount) {
+        public FrameScore sumWith(PinCount pinCount) {
             return pinCount.sumWith(new NumericFrameScore(0));
         }
 
@@ -53,7 +58,7 @@ public abstract class FrameScore {
         }
 
         @Override
-        public boolean sameAs(NumericPinCount pinCount) {
+        public boolean sameAs(PinCount pinCount) {
             return false;
         }
     }
@@ -96,7 +101,7 @@ public abstract class FrameScore {
         }
 
         @Override
-        public FrameScore sumWith(NumericPinCount pinCount) {
+        public FrameScore sumWith(PinCount pinCount) {
             return pinCount.sumWith(this);
         }
 
@@ -106,7 +111,7 @@ public abstract class FrameScore {
         }
 
         @Override
-        public boolean sameAs(NumericPinCount pinCount) {
+        public boolean sameAs(PinCount pinCount) {
             return equals(pinCount.asFrameScore());
         }
     }
