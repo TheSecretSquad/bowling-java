@@ -1,5 +1,6 @@
 package com.disalvo.peter;
 
-public interface ScoreCardPrintMedia extends FramePrintMedia {
+public interface ScoreCardPrintMedia {
 
+    void printFrame(FrameNumber frameNumber, FrameScore frameScore, Rolls rolls);
 }

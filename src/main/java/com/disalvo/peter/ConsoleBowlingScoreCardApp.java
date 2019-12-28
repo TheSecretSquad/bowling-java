@@ -21,8 +21,8 @@ public class ConsoleBowlingScoreCardApp {
 
     private static class StringMedia2 implements ScoreCardPrintMedia2 {
 
-        private final ArrayList<String> rolls;
-        private String frameScore;
+        private final ArrayList<PinCount> rolls;
+        private FrameScore frameScore;
         private final StringBuilder topLine;
         private final StringBuilder rollsLine;
         private final StringBuilder rollsBottomLine;
@@ -44,23 +44,18 @@ public class ConsoleBowlingScoreCardApp {
         }
 
         @Override
-        public void printFrameNumber(String frameNumber) {
+        public void printFrameNumber(FrameNumber frameNumber) {
 
         }
 
         @Override
-        public void printFrameScore(String frameScore) {
+        public void printFrameScore(FrameScore frameScore) {
             this.frameScore = frameScore;
         }
 
         @Override
-        public void printRoll(String pinCount) {
+        public void printRoll(PinCount pinCount) {
             rolls.add(pinCount);
-        }
-
-        @Override
-        public void printEmptyRoll() {
-            rolls.add(" ");
         }
 
         @Override
@@ -83,26 +78,26 @@ public class ConsoleBowlingScoreCardApp {
 
         private void writeRollBoxes() {
             boolean isFirstRoll = true;
-            for(String pinCount : rolls) {
+            for(PinCount pinCount : rolls) {
                 writeRollBoxFor(pinCount, isFirstRoll);
                 isFirstRoll = false;
             }
         }
 
-        private void writeRollBoxFor(String pinCount, boolean isFirstRoll) {
+        private void writeRollBoxFor(PinCount pinCount, boolean isFirstRoll) {
             topLine.append("┬");
             topLine.append("─");
             rollsLine.append("│");
             rollsBottomLine.append(isFirstRoll ? "└" : "┴");
             rollsBottomLine.append("─");
-            rollsLine.append(pinCount);
+            pinCount.print(printValue -> rollsLine.append(printValue), () -> rollsLine.append(" "));
         }
 
         private void writeFrameScore() {
-            frameScoreLine.append(approximateCenterFormattedString());
+            frameScore.print(printValue -> frameScoreLine.append(approximateCenterFormattedString(printValue)));
         }
 
-        private String approximateCenterFormattedString() {
+        private String approximateCenterFormattedString(String frameScore) {
             final int widthOfFrame = 9;
             int spaceAvailableForPadding =  widthOfFrame - frameScore.length();
             int leftPad = (int)Math.ceil(spaceAvailableForPadding / (double)2) + frameScore.length();
@@ -150,14 +145,13 @@ public class ConsoleBowlingScoreCardApp {
         }
 
         private void writeFrameScore(FrameScore frameScore) {
-            frameScoreLine.append(approximateCenterFormattedString(frameScore));
+            frameScore.print(printValue -> frameScoreLine.append(approximateCenterFormattedString(printValue)));
         }
 
-        private String approximateCenterFormattedString(FrameScore frameScore) {
+        private String approximateCenterFormattedString(String frameScore) {
             final int widthOfFrame = 9;
-            String stringValue = frameScore.toString();
-            int spaceAvailableForPadding =  widthOfFrame - stringValue.length();
-            int leftPad = (int)Math.ceil(spaceAvailableForPadding / (double)2) + stringValue.length();
+            int spaceAvailableForPadding =  widthOfFrame - frameScore.length();
+            int leftPad = (int)Math.ceil(spaceAvailableForPadding / (double)2) + frameScore.length();
             int rightPad = widthOfFrame - leftPad;
             return String.format("│%" + leftPad + "s%" + rightPad + "s│", frameScore, "");
         }
@@ -191,7 +185,7 @@ public class ConsoleBowlingScoreCardApp {
             rollsLine.append("│");
             rollsBottomLine.append(isFirstRoll ? "└" : "┴");
             rollsBottomLine.append("─");
-            rollsLine.append(adjustForEmpty(pinCount));
+            pinCount.print(printValue -> rollsLine.append(printValue), () -> rollsLine.append(" "));
         }
 
         private String adjustForEmpty(PinCount pinCount) {

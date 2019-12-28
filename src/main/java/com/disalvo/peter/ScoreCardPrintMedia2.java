@@ -1,16 +1,14 @@
 package com.disalvo.peter;
 
 public interface ScoreCardPrintMedia2 {
+
     void beginPrintFrame();
 
-    void printFrameNumber(String frameNumber);
+    void printFrameNumber(FrameNumber frameNumber);
 
-    void printFrameScore(String frameScore);
+    void printFrameScore(FrameScore frameScore);
 
-    void printRoll(String pinCount);
-
-    void printEmptyRoll();
+    void printRoll(PinCount pinCount);
 
     void endPrintFrame();
-
 }

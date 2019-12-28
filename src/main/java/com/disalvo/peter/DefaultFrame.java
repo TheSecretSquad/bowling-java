@@ -158,7 +158,7 @@ public class DefaultFrame implements Frame {
     }
 
     @Override
-    public void printOn(FramePrintMedia printMedia) {
+    public void printOn(ScoreCardPrintMedia printMedia) {
         score(frameScore -> printMedia.printFrame(frameNumber, frameScore, new Rolls(rolls)));
     }
 
@@ -166,8 +166,8 @@ public class DefaultFrame implements Frame {
     public void printOn(ScoreCardPrintMedia2 printMedia) {
         score(frameScore -> {
                 printMedia.beginPrintFrame();
-                frameNumber.print(printValue -> printMedia.printFrameNumber(printValue));
-                frameScore.print(printValue -> printMedia.printFrameScore(printValue));
+                printMedia.printFrameNumber(frameNumber);
+                printMedia.printFrameScore(frameScore);
                 printRolls(printMedia);
                 printMedia.endPrintFrame();
             }
@@ -176,7 +176,7 @@ public class DefaultFrame implements Frame {
 
     private void printRolls(ScoreCardPrintMedia2 printMedia) {
         for(PinCount pinCount : rolls) {
-            pinCount.print(printValue -> printMedia.printRoll(printValue), () -> printMedia.printEmptyRoll());
+            printMedia.printRoll(pinCount);
         }
     }
 
@@ -224,7 +224,7 @@ public class DefaultFrame implements Frame {
         }
 
         @Override
-        public void printOn(FramePrintMedia printMedia) {
+        public void printOn(ScoreCardPrintMedia printMedia) {
         }
 
         @Override
