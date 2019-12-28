@@ -1,41 +1,20 @@
 package com.disalvo.peter;
 
-import com.disalvo.peter.FrameScore.NumericFrameScore;
+import java.util.function.Consumer;
 
-import java.util.Objects;
+public abstract class PinCount {
 
-public class PinCount {
-    private int count;
-
-    public PinCount(int count) {
-        this.count = count;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PinCount pinCount = (PinCount) o;
-        return count == pinCount.count;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(count);
-    }
-
-    @Override
-    public String toString() {
-        return "PinCount{" +
-                "count=" + count +
-                '}';
-    }
-
-    FrameScore sumWith(FrameScore frameScore) {
+    public FrameScore sumWith(FrameScore frameScore) {
         return frameScore.sumWith(asFrameScore());
     }
 
-    FrameScore asFrameScore() {
-        return new NumericFrameScore(count);
+    protected abstract FrameScore asFrameScore();
+
+    public void print(Consumer<String> printAction, Runnable printEmptyAction) {
+        String printValue = toString();
+        if(printValue.isBlank())
+            printEmptyAction.run();
+        else
+            printAction.accept(printValue);
     }
 }

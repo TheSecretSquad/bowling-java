@@ -1,45 +1,53 @@
 package com.disalvo.peter;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
-public class BowlingScoreCard implements ScoreCard, ScoreCardFrameCallback, ScoreCardBonusCallback {
+public class BowlingScoreCard implements ScoreCard, FrameCallback, ScoreCardBonusCallback {
 
     private static final FrameNumber LastFrameNumber = new FrameNumber(10);
-    private static final int NumberOfStrikeBonusRolls = 2;
-    private static final int NumberOfSpareBonusRolls = 1;
 
     private final Frames frames;
     private final Bonuses bonuses;
+    private FrameNumber lastFrameNumber;
     private FrameNumber currentFrameNumber;
 
     public BowlingScoreCard() {
-        this.frames = new Frames(LastFrameNumber, new FrameFactory(this));
+        this.frames = new Frames(LastFrameNumber, new DefaultFrameFactory(this));
         this.bonuses = new Bonuses();
+        this.lastFrameNumber = LastFrameNumber;
+        this.currentFrameNumber = new FrameNumber(1);
+    }
+
+    public BowlingScoreCard(FrameFactory frameFactory) {
+        this.frames = new Frames(LastFrameNumber, frameFactory);
+        this.bonuses = new Bonuses();
+        this.lastFrameNumber = LastFrameNumber;
+        this.currentFrameNumber = new FrameNumber(1);
+    }
+
+    public BowlingScoreCard(FrameFactory frameFactory, FrameNumber lastFrameNumber) {
+        this.frames = new Frames(lastFrameNumber, frameFactory);
+        this.bonuses = new Bonuses();
+        this.lastFrameNumber = lastFrameNumber;
         this.currentFrameNumber = new FrameNumber(1);
     }
 
     @Override
-    public void roll(PinCount pinCount) {
+    public void roll(NumericPinCount pinCount) {
         bonuses.roll(pinCount);
         frames.current(frame -> frame.roll(pinCount));
     }
 
     @Override
-    public void frameScores(BiConsumer<FrameNumber, FrameScore> frameScoreConsumer) {
-        frames.each(eachFrameWithNumber(frameScoreConsumer));
-    }
-
-    private BiConsumer<FrameNumber, Frame> eachFrameWithNumber(BiConsumer<FrameNumber, FrameScore> frameScoreConsumer) {
-        return (frameNumber, frame) -> frame.score(eachFrameScoreWithNumber(frameScoreConsumer, frameNumber));
-    }
-
-    private Consumer<FrameScore> eachFrameScoreWithNumber(BiConsumer<FrameNumber, FrameScore> frameScoreConsumer, FrameNumber frameNumber) {
-        return frameScore -> frameScoreConsumer.accept(frameNumber, frameScore);
+    public void printOn(ScoreCardPrintMedia printMedia) {
+        frames.each((frameNumber, frame) -> frame.printOn(printMedia));
     }
 
     @Override
-    public void complete(Frame frame) {
+    public void printOn(ScoreCardPrintMedia2 printMedia) {
+        frames.each((frameNumber, frame) -> frame.printOn(printMedia));
+    }
+
+    @Override
+    public void completeFrame() {
         advanceFrame();
     }
 
@@ -53,7 +61,7 @@ public class BowlingScoreCard implements ScoreCard, ScoreCardFrameCallback, Scor
     }
 
     private boolean isLastFrame() {
-        return currentFrameNumber.equals(LastFrameNumber);
+        return currentFrameNumber.equals(lastFrameNumber);
     }
 
     private void advanceFrame() {

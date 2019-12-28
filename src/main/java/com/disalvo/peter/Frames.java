@@ -35,7 +35,7 @@ public class Frames {
     }
 
     private Frame firstFrame() {
-        return frameFactory.firstFrame();
+        return frameFactory.firstFrame(new FrameNumber(1));
     }
 
     public void current(Consumer<Frame> frameConsumer) {
@@ -55,19 +55,19 @@ public class Frames {
     }
 
     private Frame nextFrame(Frame previousFrame, FrameNumber frameNumber) {
-        return !isLastFrameNumber(frameNumber) ? normalFrame(previousFrame) : lastFrame(previousFrame);
+        return !isLastFrameNumber(frameNumber) ? normalFrame(frameNumber, previousFrame) : lastFrame(frameNumber, previousFrame);
     }
 
     private boolean isLastFrameNumber(FrameNumber frameNumber) {
         return frameNumber.equals(lastFrameNumber);
     }
 
-    private Frame normalFrame(Frame previousFrame) {
-        return frameFactory.nextFrame(previousFrame);
+    private Frame normalFrame(FrameNumber frameNumber, Frame previousFrame) {
+        return frameFactory.nextFrame(frameNumber, previousFrame);
     }
 
-    private Frame lastFrame(Frame previousFrame) {
-        return frameFactory.lastFrame(previousFrame);
+    private Frame lastFrame(FrameNumber frameNumber, Frame previousFrame) {
+        return frameFactory.lastFrame(frameNumber, previousFrame);
     }
 
     public void each(BiConsumer<FrameNumber, Frame> frameConsumer) {

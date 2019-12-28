@@ -2,7 +2,6 @@ package com.disalvo.peter;
 
 import com.disalvo.peter.FrameScore.EmptyFrameScore;
 import com.disalvo.peter.FrameScore.NumericFrameScore;
-import net.bytebuddy.pool.TypePool.Empty;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,7 +26,7 @@ public class NumericFrameScoreTest {
     public void testSum() {
         FrameScore frameScore = new NumericFrameScore(4);
 
-        Assert.assertEquals(new NumericFrameScore(8), frameScore.sumWith(new PinCount(4)));
+        Assert.assertEquals(new NumericFrameScore(8), frameScore.sumWith(new NumericPinCount(4)));
         Assert.assertEquals(new NumericFrameScore(10), frameScore.sumWith(new NumericFrameScore(6)));
     }
 
@@ -38,6 +37,6 @@ public class NumericFrameScoreTest {
 
         Assert.assertEquals(new NumericFrameScore(4), frameScore.sumWith(emptyFrameScore));
         Assert.assertEquals(new NumericFrameScore(4), emptyFrameScore.sumWith(frameScore));
-        Assert.assertEquals(new NumericFrameScore(4), emptyFrameScore.sumWith(new PinCount(4)));
+        Assert.assertEquals(new NumericFrameScore(4), emptyFrameScore.sumWith(new NumericPinCount(4)));
     }
 }

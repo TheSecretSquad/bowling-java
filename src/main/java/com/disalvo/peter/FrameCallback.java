@@ -1,8 +1,8 @@
 package com.disalvo.peter;
 
-public interface ScoreCardFrameCallback {
+public interface FrameCallback {
 
-    void complete(Frame frame);
+    void completeFrame();
 
     void requestBonusRolls(Frame frame, int numberOfRolls);
 }

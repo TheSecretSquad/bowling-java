@@ -41,10 +41,7 @@ public class FrameNumber {
         return new FrameNumber(number + 1);
     }
 
-    public void toDo(FrameNumber toFrameNumber, Consumer<FrameNumber> frameNumberConsumer) {
-        for(int i = this.number; i <= toFrameNumber.number; i++) {
-            frameNumberConsumer.accept(new FrameNumber(i));
-        }
+    public void print(Consumer<String> printAction) {
+        printAction.accept(toString());
     }
-
 }

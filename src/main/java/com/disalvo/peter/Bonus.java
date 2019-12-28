@@ -12,7 +12,7 @@ public class Bonus {
         this.numberOfRolls = numberOfRolls;
     }
 
-    public void roll(PinCount pinCount) {
+    public void roll(NumericPinCount pinCount) {
         if(isComplete())
             return;
 

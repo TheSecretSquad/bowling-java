@@ -1,6 +1,7 @@
 package com.disalvo.peter;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 
 public abstract class FrameScore {
 
@@ -11,6 +12,10 @@ public abstract class FrameScore {
     protected abstract FrameScore sumWith(int score);
 
     public abstract boolean sameAs(PinCount pinCount);
+
+    public void print(Consumer<String> printAction) {
+        printAction.accept(toString());
+    }
 
     public static class EmptyFrameScore extends FrameScore {
         private final String score;
@@ -34,9 +39,7 @@ public abstract class FrameScore {
 
         @Override
         public String toString() {
-            return "EmptyFrameScore{" +
-                    "score='" + score + '\'' +
-                    '}';
+            return score;
         }
 
         @Override
@@ -89,9 +92,7 @@ public abstract class FrameScore {
 
         @Override
         public String toString() {
-            return "FrameScore{" +
-                    "score=" + score +
-                    '}';
+            return Integer.toString(score);
         }
 
         @Override

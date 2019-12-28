@@ -1,21 +1,9 @@
 package com.disalvo.peter;
 
-public class FrameFactory {
-    private final ScoreCardFrameCallback scoreCard;
+public interface FrameFactory {
+    Frame nextFrame(FrameNumber frameNumber, Frame previousFrame);
 
-    public FrameFactory(ScoreCardFrameCallback scoreCard) {
-        this.scoreCard = scoreCard;
-    }
+    Frame lastFrame(FrameNumber frameNumber, Frame previousFrame);
 
-    public Frame nextFrame(Frame previousFrame) {
-        return new DefaultFrame(scoreCard, new NormalFrameBehavior(), previousFrame, 2);
-    }
-
-    public Frame lastFrame(Frame previousFrame) {
-        return new DefaultFrame(scoreCard, new LastFrameBehavior(), previousFrame, 3);
-    }
-
-    public Frame firstFrame() {
-        return new DefaultFrame(scoreCard, new NormalFrameBehavior(), 2);
-    }
+    Frame firstFrame(FrameNumber frameNumber);
 }
