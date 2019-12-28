@@ -21,6 +21,10 @@ public final class Rolls {
         }
     }
 
+    public int count() {
+        return rolls.length;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

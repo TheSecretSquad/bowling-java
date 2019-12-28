@@ -34,9 +34,7 @@ public abstract class FrameScore {
 
         @Override
         public String toString() {
-            return "EmptyFrameScore{" +
-                    "score='" + score + '\'' +
-                    '}';
+            return score;
         }
 
         @Override
@@ -89,9 +87,7 @@ public abstract class FrameScore {
 
         @Override
         public String toString() {
-            return "FrameScore{" +
-                    "score=" + score +
-                    '}';
+            return Integer.toString(score);
         }
 
         @Override

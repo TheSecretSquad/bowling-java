@@ -31,8 +31,6 @@ public final class EmptyPinCount extends PinCount {
 
     @Override
     public String toString() {
-        return "EmptyPinCount{" +
-                "count='" + count + '\'' +
-                '}';
+        return count;
     }
 }

@@ -26,9 +26,7 @@ public final class NumericPinCount extends PinCount {
 
     @Override
     public String toString() {
-        return "NumericPinCount{" +
-                "count=" + count +
-                '}';
+        return Integer.toString(count);
     }
 
     @Override
