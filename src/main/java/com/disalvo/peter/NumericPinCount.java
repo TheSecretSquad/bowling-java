@@ -20,17 +20,49 @@ public final class NumericPinCount extends PinCount {
     }
 
     @Override
+    protected boolean isGreaterThanOrEqualTo(int count) {
+        return this.count >= count;
+    }
+
+    @Override
+    public boolean sameAs(PinCount pinCount) {
+        return equals(pinCount);
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(count);
     }
 
     @Override
     public String toString() {
-        return Integer.toString(count);
+        return "NumericPinCount{" +
+                "count=" + count +
+                '}';
+    }
+
+    @Override
+    public PinCount sumWith(PinCount pinCount) {
+        return pinCount.sumWith(count);
+    }
+
+    @Override
+    protected PinCount sumWith(int count) {
+        return new NumericPinCount(this.count + count);
+    }
+
+    @Override
+    public boolean isValidWithin(PinCount maximumPinCount) {
+        return maximumPinCount.isGreaterThanOrEqualTo(count);
     }
 
     @Override
     protected FrameScore asFrameScore() {
         return new NumericFrameScore(count);
+    }
+
+    @Override
+    protected String printString() {
+        return Integer.toString(count);
     }
 }

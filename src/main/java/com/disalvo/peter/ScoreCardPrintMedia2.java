@@ -8,7 +8,7 @@ public interface ScoreCardPrintMedia2 {
 
     void printFrameScore(FrameScore frameScore);
 
-    void printRoll(PinCount pinCount);
+    void printRoll(Roll roll);
 
     void endPrintFrame();
 }

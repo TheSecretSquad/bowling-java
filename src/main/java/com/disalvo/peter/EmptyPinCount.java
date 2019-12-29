@@ -12,8 +12,28 @@ public final class EmptyPinCount extends PinCount {
     }
 
     @Override
+    public PinCount sumWith(PinCount pinCount) {
+        return pinCount.sumWith(0);
+    }
+
+    @Override
+    protected PinCount sumWith(int count) {
+        return new NumericPinCount(count);
+    }
+
+    @Override
+    public boolean isValidWithin(PinCount maximumPinCount) {
+        return maximumPinCount.isGreaterThanOrEqualTo(0);
+    }
+
+    @Override
     protected FrameScore asFrameScore() {
         return new EmptyFrameScore();
+    }
+
+    @Override
+    protected String printString() {
+        return count;
     }
 
     @Override
@@ -25,12 +45,24 @@ public final class EmptyPinCount extends PinCount {
     }
 
     @Override
+    protected boolean isGreaterThanOrEqualTo(int count) {
+        return 0 >= count;
+    }
+
+    @Override
+    public boolean sameAs(PinCount pinCount) {
+        return equals(pinCount);
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(count);
     }
 
     @Override
     public String toString() {
-        return count;
+        return "EmptyPinCount{" +
+                "count='" + count + '\'' +
+                '}';
     }
 }

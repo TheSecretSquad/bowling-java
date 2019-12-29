@@ -21,7 +21,7 @@ public class ConsoleBowlingScoreCardApp {
 
     private static class StringMedia2 implements ScoreCardPrintMedia2 {
 
-        private final ArrayList<PinCount> rolls;
+        private final ArrayList<Roll> rolls;
         private FrameScore frameScore;
         private final StringBuilder topLine;
         private final StringBuilder rollsLine;
@@ -54,8 +54,8 @@ public class ConsoleBowlingScoreCardApp {
         }
 
         @Override
-        public void printRoll(PinCount pinCount) {
-            rolls.add(pinCount);
+        public void printRoll(Roll roll) {
+            rolls.add(roll);
         }
 
         @Override
@@ -78,19 +78,19 @@ public class ConsoleBowlingScoreCardApp {
 
         private void writeRollBoxes() {
             boolean isFirstRoll = true;
-            for(PinCount pinCount : rolls) {
-                writeRollBoxFor(pinCount, isFirstRoll);
+            for(Roll roll : rolls) {
+                writeRollBoxFor(roll, isFirstRoll);
                 isFirstRoll = false;
             }
         }
 
-        private void writeRollBoxFor(PinCount pinCount, boolean isFirstRoll) {
+        private void writeRollBoxFor(Roll roll, boolean isFirstRoll) {
             topLine.append("┬");
             topLine.append("─");
             rollsLine.append("│");
             rollsBottomLine.append(isFirstRoll ? "└" : "┴");
             rollsBottomLine.append("─");
-            pinCount.print(printValue -> rollsLine.append(printValue), () -> rollsLine.append(" "));
+            roll.print(printValue -> rollsLine.append(printValue), () -> rollsLine.append(" "));
         }
 
         private void writeFrameScore() {

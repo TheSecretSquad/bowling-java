@@ -15,8 +15,13 @@ public class ConsoleBowlingGameRunner {
 
     public void start() {
         console.printLine("Start bowling!");
-        while(true) {
-            console.readRoll(input -> bowlingScoreCard.roll(input));
+
+        while (true) {
+            try {
+                console.readRoll(input -> bowlingScoreCard.roll(input));
+            } catch (InvalidRollAttemptException e) {
+                console.printLine("Oops. That's an invalid roll");
+            }
         }
     }
 

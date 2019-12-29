@@ -1,7 +1,8 @@
 package com.disalvo.peter;
 
 import com.disalvo.peter.FrameScore.EmptyFrameScore;
-import com.disalvo.peter.FrameScore.NumericFrameScore;
+import com.disalvo.peter.Roll.PinCountRoll;
+import com.disalvo.peter.Roll.SymbolRoll;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -21,7 +22,8 @@ public class DefaultFrame implements Frame {
     private FrameNumber frameNumber;
     private FrameBehavior frameBehavior;
     private final Frame previousFrame;
-    private final PinCount[] rolls;
+    private final PinCount[] rawRolls;
+    private final Roll[] recordedRolls;
     private final int maxAllowedRolls;
     private int completeAfterNumberOfRolls;
     private int currentRoll;
@@ -42,8 +44,9 @@ public class DefaultFrame implements Frame {
         this.frameNumber = frameNumber;
         this.frameBehavior = frameBehavior;
         this.previousFrame = previousFrame;
-        this.rolls = new PinCount[maxAllowedRolls];
-        Arrays.fill(rolls, new EmptyPinCount());
+        this.rawRolls = new PinCount[maxAllowedRolls];
+        this.recordedRolls = new Roll[maxAllowedRolls];
+        Arrays.fill(rawRolls, new EmptyPinCount());
         this.maxAllowedRolls = maxAllowedRolls;
         this.completeAfterNumberOfRolls = DefaultCompleteAfterNumberOfRolls;
         this.currentRoll = 0;
@@ -54,10 +57,11 @@ public class DefaultFrame implements Frame {
 
     @Override
     public void roll(NumericPinCount pinCount) {
+        frameBehavior.validateRoll(this, pinCount);
         addToCurrentRoll(pinCount);
-        countRoll();
         checkSpecialConditions();
         checkForAutoComplete();
+        countRoll();
     }
 
     @Override
@@ -68,7 +72,8 @@ public class DefaultFrame implements Frame {
     private void addToCurrentRoll(NumericPinCount pinCount) {
         if(isComplete())
             throw new TooManyRollsException();
-        rolls[currentRoll] = pinCount;
+        rawRolls[currentRoll] = pinCount;
+        recordedRolls[currentRoll] = new PinCountRoll(pinCount);
     }
 
     private boolean isComplete() {
@@ -89,11 +94,13 @@ public class DefaultFrame implements Frame {
     }
 
     private void reportSpare() {
+        recordedRolls[currentRoll] = new SymbolRoll("/");
         completeAfterNumberOfRolls = maxAllowedRolls;
         frameBehavior.spare(this);
     }
 
     private void reportStrike() {
+        recordedRolls[currentRoll] = new SymbolRoll("X");
         completeAfterNumberOfRolls = maxAllowedRolls;
         frameBehavior.strike(this);
     }
@@ -109,30 +116,30 @@ public class DefaultFrame implements Frame {
     }
 
     private boolean filledAllowedRolls() {
-        return currentRoll == completeAfterNumberOfRolls;
+        return currentRoll == completeAfterNumberOfRolls - 1;
     }
 
     private boolean isStrike() {
-        return pinCountForCurrentRoll().equals(TotalNumberOfPins);
+        return currentRoll().sameAs(TotalNumberOfPins);
     }
 
-    private PinCount pinCountForCurrentRoll() {
-        return pinCountForRoll(currentRoll - 1);
+    private PinCount currentRoll() {
+        return rollAtIndex(currentRoll);
     }
 
     private boolean isSpare() {
-        return currentRoll == DefaultCompleteAfterNumberOfRolls && sumRolls().sameAs(TotalNumberOfPins);
+        return currentRoll == DefaultCompleteAfterNumberOfRolls - 1 && sumRolls().sameAs(TotalNumberOfPins);
     }
 
-    private PinCount pinCountForRoll(int index) {
-        PinCount pinCount = rolls[index];
-        return pinCount != null ? pinCount : new NumericPinCount(0);
+    private PinCount rollAtIndex(int index) {
+        PinCount roll = rawRolls[index];
+        return roll != null ? roll : new NumericPinCount(0);
     }
 
-    private FrameScore sumRolls() {
-        FrameScore rollsScore = new NumericFrameScore(0);
+    private PinCount sumRolls() {
+        PinCount rollsScore = new NumericPinCount(0);
         for(int rollIndex = 0; rollIndex < maxAllowedRolls; rollIndex++) {
-            PinCount pinCount = rolls[rollIndex];
+            PinCount pinCount = rawRolls[rollIndex];
             if(pinCount != null)
                 rollsScore = rollsScore.sumWith(pinCount);
         }
@@ -159,7 +166,7 @@ public class DefaultFrame implements Frame {
 
     @Override
     public void printOn(ScoreCardPrintMedia printMedia) {
-        score(frameScore -> printMedia.printFrame(frameNumber, frameScore, new Rolls(rolls)));
+        score(frameScore -> printMedia.printFrame(frameNumber, frameScore, new Rolls(rawRolls)));
     }
 
     @Override
@@ -175,8 +182,8 @@ public class DefaultFrame implements Frame {
     }
 
     private void printRolls(ScoreCardPrintMedia2 printMedia) {
-        for(PinCount pinCount : rolls) {
-            printMedia.printRoll(pinCount);
+        for(Roll roll : recordedRolls) {
+            printMedia.printRoll(roll != null ? roll : new PinCountRoll(new EmptyPinCount()));
         }
     }
 
@@ -199,6 +206,11 @@ public class DefaultFrame implements Frame {
 
     private FrameScore frameScore(FrameScore previousFrameScore) {
         return sumRolls().sumWith(bonus).sumWith(previousFrameScore);
+    }
+
+    protected void rejectRollIfOver(PinCount totalAllowedPerFrame, NumericPinCount pinCount) {
+        if(!sumRolls().sumWith(pinCount).isValidWithin(totalAllowedPerFrame))
+            throw new InvalidRollAttemptException();
     }
 
     private static class NullFrame implements Frame {

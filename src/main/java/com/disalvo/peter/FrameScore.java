@@ -14,10 +14,12 @@ public abstract class FrameScore {
     public abstract boolean sameAs(PinCount pinCount);
 
     public void print(Consumer<String> printAction) {
-        printAction.accept(toString());
+        printAction.accept(printString());
     }
 
-    public static class EmptyFrameScore extends FrameScore {
+    protected abstract String printString();
+
+    public static final class EmptyFrameScore extends FrameScore {
         private final String score;
 
         public EmptyFrameScore() {
@@ -39,7 +41,9 @@ public abstract class FrameScore {
 
         @Override
         public String toString() {
-            return score;
+            return "EmptyFrameScore{" +
+                    "score='" + score + '\'' +
+                    '}';
         }
 
         @Override
@@ -61,9 +65,14 @@ public abstract class FrameScore {
         public boolean sameAs(PinCount pinCount) {
             return false;
         }
+
+        @Override
+        protected String printString() {
+            return score;
+        }
     }
 
-    public static class NumericFrameScore extends FrameScore {
+    public static final class NumericFrameScore extends FrameScore {
         private int score;
 
         public NumericFrameScore(int score) {
@@ -92,7 +101,9 @@ public abstract class FrameScore {
 
         @Override
         public String toString() {
-            return Integer.toString(score);
+            return "NumericFrameScore{" +
+                    "score=" + score +
+                    '}';
         }
 
         @Override
@@ -113,6 +124,11 @@ public abstract class FrameScore {
         @Override
         public boolean sameAs(PinCount pinCount) {
             return equals(pinCount.asFrameScore());
+        }
+
+        @Override
+        protected String printString() {
+            return Integer.toString(score);
         }
     }
 }
