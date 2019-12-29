@@ -212,11 +212,6 @@ public class DefaultFrame implements Frame {
         return sumRolls().sumWith(bonus).sumWith(previousFrameScore);
     }
 
-    protected void rejectRollIfOver(NumericPinCount pinCount, PinCount totalAllowedPerFrame) {
-        if(!sumRolls().sumWith(pinCount).isValidWithin(totalAllowedPerFrame))
-            throw new InvalidRollAttemptException();
-    }
-
     private static class NullFrame implements Frame {
 
         @Override
