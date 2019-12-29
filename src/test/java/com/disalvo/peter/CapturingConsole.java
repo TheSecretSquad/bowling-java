@@ -1,5 +1,7 @@
 package com.disalvo.peter;
 
+import java.util.function.Consumer;
+
 public class CapturingConsole implements Console {
 
     private final StringBuilder contents;
@@ -15,5 +17,38 @@ public class CapturingConsole implements Console {
     public void printLine(String line) {
         contents.append(line);
         contents.append(System.lineSeparator());
+    }
+
+    @Override
+    public void readRoll(Consumer<Integer> rollConsumer) {
+        rollConsumer.accept(1);
+        rollConsumer.accept(1);
+
+        rollConsumer.accept(1);
+        rollConsumer.accept(1);
+
+        rollConsumer.accept(1);
+        rollConsumer.accept(1);
+
+        rollConsumer.accept(1);
+        rollConsumer.accept(1);
+
+        rollConsumer.accept(1);
+        rollConsumer.accept(1);
+
+        rollConsumer.accept(1);
+        rollConsumer.accept(1);
+
+        rollConsumer.accept(1);
+        rollConsumer.accept(1);
+
+        rollConsumer.accept(1);
+        rollConsumer.accept(1);
+
+        rollConsumer.accept(1);
+        rollConsumer.accept(1);
+
+        rollConsumer.accept(1);
+        rollConsumer.accept(1);
     }
 }
