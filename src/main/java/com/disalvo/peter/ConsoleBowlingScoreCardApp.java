@@ -188,11 +188,6 @@ public class ConsoleBowlingScoreCardApp {
             pinCount.print(printValue -> rollsLine.append(printValue), () -> rollsLine.append(" "));
         }
 
-        private String adjustForEmpty(PinCount pinCount) {
-            String stringValue = pinCount.toString();
-            return stringValue.isBlank() ? " " : stringValue;
-        }
-
         public void printOnConsole(Console console) {
             console.printLine(topLine.toString());
             console.printLine(rollsLine.toString());

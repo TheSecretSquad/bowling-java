@@ -11,8 +11,6 @@ public abstract class FrameScore {
 
     protected abstract FrameScore sumWith(int score);
 
-    public abstract boolean sameAs(PinCount pinCount);
-
     public void print(Consumer<String> printAction) {
         printAction.accept(printString());
     }
@@ -59,11 +57,6 @@ public abstract class FrameScore {
         @Override
         protected FrameScore sumWith(int score) {
             return new NumericFrameScore(score);
-        }
-
-        @Override
-        public boolean sameAs(PinCount pinCount) {
-            return false;
         }
 
         @Override
@@ -119,11 +112,6 @@ public abstract class FrameScore {
         @Override
         protected FrameScore sumWith(int score) {
             return new NumericFrameScore(this.score + score);
-        }
-
-        @Override
-        public boolean sameAs(PinCount pinCount) {
-            return equals(pinCount.asFrameScore());
         }
 
         @Override
