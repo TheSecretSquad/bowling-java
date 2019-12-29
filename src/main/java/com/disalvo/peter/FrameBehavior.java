@@ -1,8 +1,22 @@
 package com.disalvo.peter;
 
-public interface FrameBehavior {
+public abstract class FrameBehavior {
 
-    void strike(DefaultFrame frame);
-    void spare(DefaultFrame frame);
-    void validateRoll(DefaultFrame defaultFrame, NumericPinCount pinCount);
+    private PinCount totalAllowedPerFrame;
+
+    protected FrameBehavior(PinCount totalAllowedPerFrame) {
+        this.totalAllowedPerFrame = totalAllowedPerFrame;
+    }
+
+    public abstract void strike(DefaultFrame frame);
+    public abstract void spare(DefaultFrame frame);
+
+    public void validateRoll(PinCount currentRollTotal) {
+        if(!currentRollTotal.isValidWithin(totalAllowedPerFrame))
+            throw new InvalidRollAttemptException();
+    }
+
+    protected void allowTotalPerFrame(PinCount pinCount) {
+        totalAllowedPerFrame = pinCount;
+    }
 }

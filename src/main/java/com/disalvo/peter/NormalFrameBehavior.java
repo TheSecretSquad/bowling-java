@@ -1,11 +1,9 @@
 package com.disalvo.peter;
 
-public class NormalFrameBehavior implements FrameBehavior {
-
-    private final PinCount totalAllowedPerFrame;
+public final class NormalFrameBehavior extends FrameBehavior {
 
     public NormalFrameBehavior() {
-        totalAllowedPerFrame = new NumericPinCount(10);
+        super(new NumericPinCount(10));
     }
 
     @Override
@@ -18,10 +16,5 @@ public class NormalFrameBehavior implements FrameBehavior {
     public void spare(DefaultFrame frame) {
         frame.complete();
         frame.requestBonusRolls(1);
-    }
-
-    @Override
-    public void validateRoll(DefaultFrame frame, NumericPinCount pinCount) {
-        frame.rejectRollIfOver(totalAllowedPerFrame, pinCount);
     }
 }
