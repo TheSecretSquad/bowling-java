@@ -6,7 +6,7 @@ public class BowlingScoreCard implements ScoreCard, FrameCallback, ScoreCardBonu
 
     private final Frames frames;
     private final Bonuses bonuses;
-    private FrameNumber lastFrameNumber;
+    private final FrameNumber lastFrameNumber;
     private FrameNumber currentFrameNumber;
 
     public BowlingScoreCard() {

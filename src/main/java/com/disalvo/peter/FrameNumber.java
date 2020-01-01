@@ -1,10 +1,9 @@
 package com.disalvo.peter;
 
 import java.util.Objects;
-import java.util.function.Consumer;
 
 public class FrameNumber {
-    private int number;
+    private final int number;
 
     public FrameNumber(int number) {
         validate(number);

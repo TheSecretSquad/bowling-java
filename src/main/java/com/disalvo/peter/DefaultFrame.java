@@ -19,8 +19,8 @@ public class DefaultFrame implements Frame {
     private static final Frame NullFrame = new NullFrame();
 
     private final FrameCallback frameCallback;
-    private FrameNumber frameNumber;
-    private FrameBehavior frameBehavior;
+    private final FrameNumber frameNumber;
+    private final FrameBehavior frameBehavior;
     private final Frame previousFrame;
     private final PinCount[] rawRolls;
     private final Roll[] recordedRolls;
@@ -31,8 +31,8 @@ public class DefaultFrame implements Frame {
     private boolean waitingForBonus;
     private FrameScore bonus;
 
-    public DefaultFrame(FrameCallback frameCallback, FrameNumber frameNumber, FrameBehavior frameBehavior, int maxAllowedRollIndex) {
-        this(frameCallback, frameNumber, frameBehavior, NullFrame, maxAllowedRollIndex);
+    public DefaultFrame(FrameCallback frameCallback, FrameNumber frameNumber, FrameBehavior frameBehavior, int maxAllowedRolls) {
+        this(frameCallback, frameNumber, frameBehavior, NullFrame, maxAllowedRolls);
     }
 
     public DefaultFrame(FrameCallback frameCallback,

@@ -12,7 +12,7 @@ public abstract class PinCount {
 
     protected abstract PinCount sumWith(int count);
 
-    public abstract boolean isValidWithin(PinCount maximumPinCount);
+    public abstract boolean isValidForMaximum(PinCount maximumPinCount);
 
     protected abstract FrameScore asFrameScore();
 

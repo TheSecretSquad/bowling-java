@@ -22,7 +22,7 @@ public final class EmptyPinCount extends PinCount {
     }
 
     @Override
-    public boolean isValidWithin(PinCount maximumPinCount) {
+    public boolean isValidForMaximum(PinCount maximumPinCount) {
         return maximumPinCount.isGreaterThanOrEqualTo(0);
     }
 

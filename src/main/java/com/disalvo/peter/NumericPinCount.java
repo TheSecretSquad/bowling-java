@@ -52,7 +52,7 @@ public final class NumericPinCount extends PinCount {
     }
 
     @Override
-    public boolean isValidWithin(PinCount maximumPinCount) {
+    public boolean isValidForMaximum(PinCount maximumPinCount) {
         return maximumPinCount.isGreaterThanOrEqualTo(count);
     }
 

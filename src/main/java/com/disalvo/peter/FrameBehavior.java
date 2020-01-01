@@ -12,7 +12,7 @@ public abstract class FrameBehavior {
     public abstract void spare(DefaultFrame frame);
 
     public void validateRoll(PinCount currentRollTotal) {
-        if(!currentRollTotal.isValidWithin(totalAllowedPerFrame))
+        if(!currentRollTotal.isValidForMaximum(totalAllowedPerFrame))
             throw new InvalidRollAttemptException();
     }
 
