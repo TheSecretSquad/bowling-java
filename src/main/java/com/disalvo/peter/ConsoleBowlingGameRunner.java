@@ -6,11 +6,11 @@ import java.util.function.Consumer;
 public class ConsoleBowlingGameRunner {
 
     private final Console console;
-    private ConsoleBowlingScoreCardApp bowlingScoreCard;
+    private final ConsoleBowlingScoreCardApp bowlingScoreCardApp;
 
     public ConsoleBowlingGameRunner() {
         console = new SystemConsole();
-        bowlingScoreCard = new ConsoleBowlingScoreCardApp(new BowlingScoreCard(), console);
+        bowlingScoreCardApp = new ConsoleBowlingScoreCardApp(new BowlingScoreCard(), console);
     }
 
     public void start() {
@@ -18,7 +18,7 @@ public class ConsoleBowlingGameRunner {
 
         while (true) {
             try {
-                console.readRoll(input -> bowlingScoreCard.roll(input));
+                console.readRoll(input -> bowlingScoreCardApp.roll(input));
             } catch (InvalidRollAttemptException e) {
                 console.printLine("Oops. That's an invalid roll");
             }
