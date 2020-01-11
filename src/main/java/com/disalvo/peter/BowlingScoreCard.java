@@ -38,12 +38,12 @@ public class BowlingScoreCard implements ScoreCard, FrameCallback, ScoreCardBonu
 
     @Override
     public void printOn(ScoreCardPrintMedia printMedia) {
-        frames.each((frameNumber, frame) -> frame.printOn(printMedia));
+        frames.eachInOrder(frame -> frame.printOn(printMedia));
     }
 
     @Override
     public void printOn(ScoreCardPrintMedia2 printMedia) {
-        frames.each((frameNumber, frame) -> frame.printOn(printMedia));
+        frames.eachInOrder(frame -> frame.printOn(printMedia));
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.disalvo.peter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class Frames {
@@ -70,10 +69,10 @@ public class Frames {
         return frameFactory.lastFrame(frameNumber, previousFrame);
     }
 
-    public void each(BiConsumer<FrameNumber, Frame> frameConsumer) {
+    public void eachInOrder(Consumer<Frame> frameConsumer) {
         FrameNumber frameNumber = new FrameNumber(1);
         for(Frame frame : frameList) {
-            frameConsumer.accept(frameNumber, frame);
+            frameConsumer.accept(frame);
             frameNumber = frameNumber.advanced();
         }
     }
