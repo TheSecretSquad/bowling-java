@@ -1,11 +1,11 @@
 package com.disalvo.peter;
 
 import com.disalvo.peter.FrameScore.EmptyFrameScore;
+import com.disalvo.peter.FrameScore.NumericFrameScore;
 import com.disalvo.peter.Roll.PinCountRoll;
 import com.disalvo.peter.Roll.SymbolRoll;
 
 import java.util.Arrays;
-import java.util.function.Consumer;
 
 public class DefaultFrame implements Frame {
 
@@ -26,7 +26,7 @@ public class DefaultFrame implements Frame {
     private final Roll[] recordedRolls;
     private final int maxAllowedRollIndex;
     private int completeAfterRollIndex;
-    private int currentRoll;
+    private int currentRollIndex;
     private boolean isComplete;
     private boolean waitingForBonus;
     private FrameScore bonus;
@@ -49,10 +49,10 @@ public class DefaultFrame implements Frame {
         Arrays.fill(rawRolls, new EmptyPinCount());
         this.maxAllowedRollIndex = maxAllowedRolls - 1;
         this.completeAfterRollIndex = DefaultCompleteAfterRollIndex;
-        this.currentRoll = 0;
+        this.currentRollIndex = 0;
         this.isComplete = false;
         this.waitingForBonus = false;
-        this.bonus = emptyFrameScore();
+        this.bonus = new NumericFrameScore(0);
     }
 
     @Override
@@ -76,8 +76,8 @@ public class DefaultFrame implements Frame {
     private void addToCurrentRoll(NumericPinCount pinCount) {
         if(isComplete())
             throw new TooManyRollsException();
-        rawRolls[currentRoll] = pinCount;
-        recordedRolls[currentRoll] = new PinCountRoll(pinCount);
+        rawRolls[currentRollIndex] = pinCount;
+        recordedRolls[currentRollIndex] = new PinCountRoll(pinCount);
     }
 
     private boolean isComplete() {
@@ -85,7 +85,7 @@ public class DefaultFrame implements Frame {
     }
 
     private void countRoll() {
-        ++currentRoll;
+        ++currentRollIndex;
     }
 
     private void checkSpecialConditions() {
@@ -98,13 +98,13 @@ public class DefaultFrame implements Frame {
     }
 
     private void reportSpare() {
-        recordedRolls[currentRoll] = new SymbolRoll("/");
+        recordedRolls[currentRollIndex] = new SymbolRoll("/");
         completeAfterRollIndex = maxAllowedRollIndex;
         frameBehavior.spare(this);
     }
 
     private void reportStrike() {
-        recordedRolls[currentRoll] = new SymbolRoll("X");
+        recordedRolls[currentRollIndex] = new SymbolRoll("X");
         completeAfterRollIndex = maxAllowedRollIndex;
         frameBehavior.strike(this);
     }
@@ -120,7 +120,7 @@ public class DefaultFrame implements Frame {
     }
 
     private boolean filledAllowedRolls() {
-        return currentRoll == completeAfterRollIndex;
+        return currentRollIndex == completeAfterRollIndex;
     }
 
     private boolean isStrike() {
@@ -128,11 +128,11 @@ public class DefaultFrame implements Frame {
     }
 
     private PinCount currentRoll() {
-        return rollAtIndex(currentRoll);
+        return rollAtIndex(currentRollIndex);
     }
 
     private boolean isSpare() {
-        return currentRoll == DefaultCompleteAfterRollIndex && sumRolls().sameAs(TotalNumberOfPins);
+        return currentRollIndex == DefaultCompleteAfterRollIndex && sumRolls().sameAs(TotalNumberOfPins);
     }
 
     private PinCount rollAtIndex(int index) {
@@ -150,16 +150,13 @@ public class DefaultFrame implements Frame {
         return rollsScore;
     }
 
-    private void score(Consumer<FrameScore> frameScoreConsumer) {
-        if(shouldAppearEmpty())
-            frameScoreConsumer.accept(emptyFrameScore());
-        else
-            previousFrame.totalWith(sumRolls().sumWith(bonus), frameScoreConsumer);
+    @Override
+    public FrameScore score() {
+        return shouldAppearEmpty() ? emptyFrameScore() : previousFrame.score().sumWith(localScore());
     }
 
-    @Override
-    public void totalWith(FrameScore otherFrameScore, Consumer<FrameScore> frameScoreConsumer) {
-        score(myFrameScore ->  frameScoreConsumer.accept(myFrameScore.sumWith(otherFrameScore)));
+    private FrameScore localScore() {
+        return sumRolls().sumWith(bonus);
     }
 
     public void complete() {
@@ -174,19 +171,16 @@ public class DefaultFrame implements Frame {
 
     @Override
     public void printOn(ScoreCardPrintMedia printMedia) {
-        score(frameScore -> printMedia.printFrame(frameNumber, frameScore, new Rolls(rawRolls)));
+        printMedia.printFrame(frameNumber, score(), new Rolls(rawRolls));
     }
 
     @Override
     public void printOn(ScoreCardPrintMedia2 printMedia) {
-        score(frameScore -> {
-                printMedia.beginPrintFrame();
-                printMedia.printFrameNumber(frameNumber);
-                printMedia.printFrameScore(frameScore);
-                printRolls(printMedia);
-                printMedia.endPrintFrame();
-            }
-        );
+        printMedia.beginPrintFrame();
+        printMedia.printFrameNumber(frameNumber);
+        printMedia.printFrameScore(score());
+        printRolls(printMedia);
+        printMedia.endPrintFrame();
     }
 
     private void printRolls(ScoreCardPrintMedia2 printMedia) {
@@ -220,15 +214,6 @@ public class DefaultFrame implements Frame {
             // Do nothing
         }
 
-        public void score(Consumer<FrameScore> frameScoreConsumer) {
-            frameScoreConsumer.accept(emptyFrameScore());
-        }
-
-        @Override
-        public void totalWith(FrameScore frameScore, Consumer<FrameScore> frameScoreConsumer) {
-            frameScoreConsumer.accept(frameScore.sumWith(emptyFrameScore()));
-        }
-
         @Override
         public void bonusComplete() {
             // Do nothing
@@ -241,6 +226,11 @@ public class DefaultFrame implements Frame {
         @Override
         public void printOn(ScoreCardPrintMedia2 printMedia) {
 
+        }
+
+        @Override
+        public FrameScore score() {
+            return new NumericFrameScore(0);
         }
     }
 }

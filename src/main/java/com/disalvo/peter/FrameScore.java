@@ -46,17 +46,17 @@ public abstract class FrameScore {
 
         @Override
         public FrameScore sumWith(FrameScore other) {
-            return other;
+            return this;
         }
 
         @Override
         public FrameScore sumWith(PinCount pinCount) {
-            return pinCount.sumWith(new NumericFrameScore(0));
+            return this;
         }
 
         @Override
         protected FrameScore sumWith(int score) {
-            return new NumericFrameScore(score);
+            return this;
         }
 
         @Override

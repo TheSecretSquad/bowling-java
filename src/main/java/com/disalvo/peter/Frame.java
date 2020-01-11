@@ -1,7 +1,5 @@
 package com.disalvo.peter;
 
-import java.util.function.Consumer;
-
 public interface Frame {
 
     void roll(NumericPinCount pinCount);
@@ -10,7 +8,7 @@ public interface Frame {
 
     void bonusComplete();
 
-    void totalWith(FrameScore frameScore, Consumer<FrameScore> frameScoreConsumer);
+    FrameScore score();
 
     void printOn(ScoreCardPrintMedia printMedia);
 

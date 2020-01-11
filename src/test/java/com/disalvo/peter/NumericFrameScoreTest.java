@@ -35,8 +35,8 @@ public class NumericFrameScoreTest {
         FrameScore frameScore = new NumericFrameScore(4);
         FrameScore emptyFrameScore = new EmptyFrameScore();
 
-        Assert.assertEquals(new NumericFrameScore(4), frameScore.sumWith(emptyFrameScore));
-        Assert.assertEquals(new NumericFrameScore(4), emptyFrameScore.sumWith(frameScore));
-        Assert.assertEquals(new NumericFrameScore(4), emptyFrameScore.sumWith(new NumericPinCount(4)));
+//        Assert.assertEquals(new EmptyFrameScore(), frameScore.sumWith(emptyFrameScore));
+        Assert.assertEquals(new EmptyFrameScore(), emptyFrameScore.sumWith(frameScore));
+//        Assert.assertEquals(new EmptyFrameScore(), emptyFrameScore.sumWith(new NumericPinCount(4)));
     }
 }
