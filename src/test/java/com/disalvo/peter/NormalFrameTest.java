@@ -25,44 +25,41 @@ public class NormalFrameTest {
     }
 
     @Test
-    public void givenAFrameIsNotComplete_frameScoreIsEmpty() {
+    public void givenAFrameIsNotComplete_whenPrinting_frameScoreIsEmpty() {
         FrameCallback scoreCard = mock(FrameCallback.class);
         Frame frame = new DefaultFrame(scoreCard, anyFrameNumber(), new NormalFrameBehavior(), 2);
 
         frame.roll(new NumericPinCount(1));
 
-        Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
-        frame.score(frameScoreConsumer);
+        ScoreCardPrintMedia2 scoreCardPrintMedia = mock(ScoreCardPrintMedia2.class);
+        frame.printOn(scoreCardPrintMedia);
 
-        verify(frameScoreConsumer).accept(new EmptyFrameScore());
+        verify(scoreCardPrintMedia).printFrameScore(new EmptyFrameScore());
     }
 
     @Test
     public void givenTwoRollsMade_frameIsComplete() {
-        FrameCallback scoreCard = mock(FrameCallback.class);
-        Frame frame = new DefaultFrame(scoreCard, anyFrameNumber(), new NormalFrameBehavior(), 2);
+        FrameCallback frameCallback = mock(FrameCallback.class);
+        Frame frame = new DefaultFrame(frameCallback, anyFrameNumber(), new NormalFrameBehavior(), 2);
 
         frame.roll(new NumericPinCount(1));
         frame.roll(new NumericPinCount(1));
 
-        Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
-        frame.score(frameScoreConsumer);
-
-        verify(scoreCard).completeFrame();
+        verify(frameCallback).completeFrame();
     }
 
     @Test
-    public void givenAFrameIsComplete_frameIsScored() {
+    public void givenAFrameIsComplete_whenPrinting_printsScore() {
         FrameCallback scoreCard = mock(FrameCallback.class);
         Frame frame = new DefaultFrame(scoreCard, anyFrameNumber(), new NormalFrameBehavior(), 2);
 
         frame.roll(new NumericPinCount(1));
         frame.roll(new NumericPinCount(1));
 
-        Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
-        frame.score(frameScoreConsumer);
+        ScoreCardPrintMedia2 scoreCardPrintMedia = mock(ScoreCardPrintMedia2.class);
+        frame.printOn(scoreCardPrintMedia);
 
-        verify(frameScoreConsumer).accept(new NumericFrameScore(2));
+        verify(scoreCardPrintMedia).printFrameScore(new NumericFrameScore(2));
     }
 
     @Test
@@ -78,34 +75,34 @@ public class NormalFrameTest {
 
     @Test
     public void givenRolledAStrike_reportsStrike() {
-        FrameCallback scoreCard = mock(FrameCallback.class);
-        Frame frame = new DefaultFrame(scoreCard, anyFrameNumber(), new NormalFrameBehavior(), 2);
+        FrameCallback frameCallback = mock(FrameCallback.class);
+        Frame frame = new DefaultFrame(frameCallback, anyFrameNumber(), new NormalFrameBehavior(), 2);
 
         frame.roll(new NumericPinCount(10));
 
-        verify(scoreCard).requestBonusRolls(frame, 2);
+        verify(frameCallback).requestBonusRolls(frame, 2);
     }
 
     @Test
-    public void givenFrameIsComplete_andHasAPendingBonus_frameScoreIsEmptyUntilBonusIsComplete() {
+    public void givenFrameIsComplete_andHasAPendingBonus_whenPrinting_frameScoreIsEmptyUntilBonusIsComplete() {
         FrameCallback scoreCard = mock(FrameCallback.class);
         Frame frame = new DefaultFrame(scoreCard, anyFrameNumber(), new NormalFrameBehavior(), 2);
 
         frame.roll(new NumericPinCount(10));
 
-        Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
-        frame.score(frameScoreConsumer);
+        ScoreCardPrintMedia2 scoreCardPrintMedia = mock(ScoreCardPrintMedia2.class);
+        frame.printOn(scoreCardPrintMedia);
 
-        verify(frameScoreConsumer).accept(new EmptyFrameScore());
+        verify(scoreCardPrintMedia).printFrameScore(new EmptyFrameScore());
 
         frame.bonusComplete();
 
-        frame.score(frameScoreConsumer);
-        verify(frameScoreConsumer).accept(new NumericFrameScore(10));
+        frame.printOn(scoreCardPrintMedia);
+        verify(scoreCardPrintMedia).printFrameScore(new NumericFrameScore(10));
     }
 
     @Test
-    public void givenPreviousFrame_scoreIsSumOfFrameAndPreviousFrame() {
+    public void givenPreviousFrame_whenPrinting_scoreIsSumOfFrameAndPreviousFrame() {
         FrameCallback scoreCard = mock(FrameCallback.class);
         Frame previousFrame = new DefaultFrame(scoreCard, anyFrameNumber(), new NormalFrameBehavior(), 2);
 
@@ -117,9 +114,9 @@ public class NormalFrameTest {
         frame.roll(new NumericPinCount(2));
         frame.roll(new NumericPinCount(2));
 
-        Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
-        frame.score(frameScoreConsumer);
+        ScoreCardPrintMedia2 scoreCardPrintMedia = mock(ScoreCardPrintMedia2.class);
+        frame.printOn(scoreCardPrintMedia);
 
-        verify(frameScoreConsumer).accept(new NumericFrameScore(6));
+        verify(scoreCardPrintMedia).printFrameScore(new NumericFrameScore(6));
     }
 }

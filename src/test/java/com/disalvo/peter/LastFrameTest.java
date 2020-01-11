@@ -24,11 +24,6 @@ public class LastFrameTest {
         frame.roll(new NumericPinCount(1));
 
         verify(scoreCard).completeFrame();
-
-        Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
-        frame.score(frameScoreConsumer);
-
-        verify(frameScoreConsumer).accept(new NumericFrameScore(11));
     }
 
     @Test
@@ -42,11 +37,6 @@ public class LastFrameTest {
         frame.roll(new NumericPinCount(5));
 
         verify(scoreCard).completeFrame();
-
-        Consumer<FrameScore> frameScoreConsumer = mock(Consumer.class);
-        frame.score(frameScoreConsumer);
-
-        verify(frameScoreConsumer).accept(new NumericFrameScore(20));
     }
 
     @Test

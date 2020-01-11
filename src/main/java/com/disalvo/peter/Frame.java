@@ -10,7 +10,7 @@ public interface Frame {
 
     void bonusComplete();
 
-    void score(Consumer<FrameScore> frameScoreConsumer);
+    void totalWith(FrameScore frameScore, Consumer<FrameScore> frameScoreConsumer);
 
     void printOn(ScoreCardPrintMedia printMedia);
 

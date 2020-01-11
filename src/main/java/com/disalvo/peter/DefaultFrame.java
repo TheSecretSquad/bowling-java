@@ -150,12 +150,16 @@ public class DefaultFrame implements Frame {
         return rollsScore;
     }
 
-    @Override
-    public void score(Consumer<FrameScore> frameScoreConsumer) {
+    private void score(Consumer<FrameScore> frameScoreConsumer) {
         if(shouldAppearEmpty())
             frameScoreConsumer.accept(emptyFrameScore());
         else
-            previousFrame.score(sumWithPreviousFrameScore(frameScoreConsumer));
+            previousFrame.totalWith(sumRolls().sumWith(bonus), frameScoreConsumer);
+    }
+
+    @Override
+    public void totalWith(FrameScore otherFrameScore, Consumer<FrameScore> frameScoreConsumer) {
+        score(myFrameScore ->  frameScoreConsumer.accept(myFrameScore.sumWith(otherFrameScore)));
     }
 
     public void complete() {
@@ -204,14 +208,6 @@ public class DefaultFrame implements Frame {
         return waitingForBonus;
     }
 
-    private Consumer<FrameScore> sumWithPreviousFrameScore(Consumer<FrameScore> frameScoreConsumer) {
-        return previousFrameScore -> frameScoreConsumer.accept(frameScore(previousFrameScore));
-    }
-
-    private FrameScore frameScore(FrameScore previousFrameScore) {
-        return sumRolls().sumWith(bonus).sumWith(previousFrameScore);
-    }
-
     private static class NullFrame implements Frame {
 
         @Override
@@ -224,9 +220,13 @@ public class DefaultFrame implements Frame {
             // Do nothing
         }
 
-        @Override
         public void score(Consumer<FrameScore> frameScoreConsumer) {
             frameScoreConsumer.accept(emptyFrameScore());
+        }
+
+        @Override
+        public void totalWith(FrameScore frameScore, Consumer<FrameScore> frameScoreConsumer) {
+            frameScoreConsumer.accept(frameScore.sumWith(emptyFrameScore()));
         }
 
         @Override
