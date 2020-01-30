@@ -1,6 +1,7 @@
 package com.disalvo.peter;
 
 import com.disalvo.peter.FrameScore.EmptyFrameScore;
+import com.disalvo.peter.ScoreCardPrintMedia3.PinCountPrintMedia;
 
 import java.util.Objects;
 
@@ -52,6 +53,11 @@ public final class EmptyPinCount extends PinCount {
     @Override
     public boolean sameAs(PinCount pinCount) {
         return equals(pinCount);
+    }
+
+    @Override
+    public void printOn(PinCountPrintMedia pinCountPrintMedia) {
+        pinCountPrintMedia.printEmptyPinCount();
     }
 
     @Override

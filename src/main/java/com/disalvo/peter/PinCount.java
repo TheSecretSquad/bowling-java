@@ -1,5 +1,7 @@
 package com.disalvo.peter;
 
+import com.disalvo.peter.ScoreCardPrintMedia3.PinCountPrintMedia;
+
 import java.util.function.Consumer;
 
 public abstract class PinCount {
@@ -31,4 +33,6 @@ public abstract class PinCount {
         else
             printAction.accept(printValue);
     }
+
+    public abstract void printOn(PinCountPrintMedia pinCountPrintMedia);
 }

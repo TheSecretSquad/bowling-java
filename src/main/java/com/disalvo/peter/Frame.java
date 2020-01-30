@@ -1,5 +1,7 @@
 package com.disalvo.peter;
 
+import com.disalvo.peter.ScoreCardPrintMedia3.FramePrintMedia;
+
 public interface Frame {
 
     void roll(NumericPinCount pinCount);
@@ -13,4 +15,6 @@ public interface Frame {
     void printOn(ScoreCardPrintMedia printMedia);
 
     void printOn(ScoreCardPrintMedia2 printMedia);
+
+    void printOn(FramePrintMedia printMedia);
 }

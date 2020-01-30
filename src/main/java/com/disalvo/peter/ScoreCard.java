@@ -6,4 +6,6 @@ public interface ScoreCard {
     void printOn(ScoreCardPrintMedia printMedia);
 
     void printOn(ScoreCardPrintMedia2 printMedia);
+
+    void printOn(ScoreCardPrintMedia3 printMedia);
 }

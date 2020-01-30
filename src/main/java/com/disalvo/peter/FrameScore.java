@@ -1,5 +1,7 @@
 package com.disalvo.peter;
 
+import com.disalvo.peter.ScoreCardPrintMedia3.FrameScorePrintMedia;
+
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -16,6 +18,8 @@ public abstract class FrameScore {
     }
 
     protected abstract String printString();
+
+    protected abstract void printOn(FrameScorePrintMedia printMedia);
 
     public static final class EmptyFrameScore extends FrameScore {
         private final String score;
@@ -62,6 +66,11 @@ public abstract class FrameScore {
         @Override
         protected String printString() {
             return score;
+        }
+
+        @Override
+        protected void printOn(FrameScorePrintMedia printMedia) {
+            printMedia.printEmptyFrameScore();
         }
     }
 
@@ -117,6 +126,11 @@ public abstract class FrameScore {
         @Override
         protected String printString() {
             return Integer.toString(score);
+        }
+
+        @Override
+        protected void printOn(FrameScorePrintMedia printMedia) {
+            printMedia.printFrameScore(score);
         }
     }
 }

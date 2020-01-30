@@ -1,11 +1,15 @@
 package com.disalvo.peter;
 
+import com.disalvo.peter.ScoreCardPrintMedia3.RollPrintMedia;
+
 import java.util.Objects;
 import java.util.function.Consumer;
 
 public abstract class Roll {
 
     public abstract void print(Consumer<String> printAction, Runnable printEmptyAction);
+
+    public abstract void printOn(RollPrintMedia rollPrintMedia);
 
     public final static class PinCountRoll extends Roll {
 
@@ -38,6 +42,11 @@ public abstract class Roll {
         @Override
         public void print(Consumer<String> printAction, Runnable printEmptyAction) {
             pinCount.print(printAction, printEmptyAction);
+        }
+
+        @Override
+        public void printOn(RollPrintMedia rollPrintMedia) {
+            rollPrintMedia.printRollPinCount(media -> pinCount.printOn(media));
         }
     }
 
@@ -74,6 +83,14 @@ public abstract class Roll {
         @Override
         public void print(Consumer<String> printAction, Runnable printEmptyAction) {
             printAction.accept(symbol);
+        }
+
+        @Override
+        public void printOn(RollPrintMedia rollPrintMedia) {
+            if(symbol.equals("/"))
+                rollPrintMedia.printSpare();
+            if(symbol.equals("X"))
+                rollPrintMedia.printStrike();
         }
     }
 }

@@ -4,6 +4,7 @@ import com.disalvo.peter.FrameScore.EmptyFrameScore;
 import com.disalvo.peter.FrameScore.NumericFrameScore;
 import com.disalvo.peter.Roll.PinCountRoll;
 import com.disalvo.peter.Roll.SymbolRoll;
+import com.disalvo.peter.ScoreCardPrintMedia3.FramePrintMedia;
 
 import java.util.Arrays;
 
@@ -173,7 +174,7 @@ public class DefaultFrame implements Frame {
     public void printOn(ScoreCardPrintMedia printMedia) {
         printMedia.printFrame(frameNumber, score(), new Rolls(rawRolls));
     }
-
+    
     @Override
     public void printOn(ScoreCardPrintMedia2 printMedia) {
         printMedia.beginPrintFrame();
@@ -186,6 +187,20 @@ public class DefaultFrame implements Frame {
     private void printRolls(ScoreCardPrintMedia2 printMedia) {
         for(Roll roll : recordedRolls) {
             printMedia.printRoll(roll != null ? roll : new PinCountRoll(new EmptyPinCount()));
+        }
+    }
+
+    @Override
+    public void printOn(FramePrintMedia printMedia) {
+        printMedia.printFrameNumber(media -> frameNumber.printOn(media));
+        printMedia.printFrameScore(media -> score().printOn(media));
+        printRolls2(printMedia);
+    }
+
+    private void printRolls2(FramePrintMedia printMedia) {
+        for(Roll roll : recordedRolls) {
+            final Roll resolvedRoll = roll != null ? roll : new PinCountRoll(new EmptyPinCount());
+            printMedia.printRoll(media -> resolvedRoll.printOn(media));
         }
     }
 
@@ -225,6 +240,11 @@ public class DefaultFrame implements Frame {
 
         @Override
         public void printOn(ScoreCardPrintMedia2 printMedia) {
+
+        }
+
+        @Override
+        public void printOn(FramePrintMedia printMedia) {
 
         }
 

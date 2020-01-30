@@ -1,5 +1,7 @@
 package com.disalvo.peter;
 
+import com.disalvo.peter.ScoreCardPrintMedia3.FrameNumberPrintMedia;
+
 import java.util.Objects;
 
 public class FrameNumber {
@@ -38,5 +40,9 @@ public class FrameNumber {
 
     public FrameNumber advanced() {
         return new FrameNumber(number + 1);
+    }
+
+    public void printOn(FrameNumberPrintMedia printMedia) {
+        printMedia.printFrameNumber(number);
     }
 }
